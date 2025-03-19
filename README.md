@@ -1,1 +1,1 @@
-# WhatBot
+# WhatConnect
