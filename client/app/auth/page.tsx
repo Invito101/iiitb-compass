@@ -44,8 +44,8 @@ export default function Login() {
           <Image
             src="/iiitb-logo.jpeg"
             alt="IIITB Logo"
-            width={500}
-            height={100}
+            width={700}
+            height={200}
             className="shadow-md"
           />
           <CardTitle className="text-center text-white text-2xl font-semibold pt-5">

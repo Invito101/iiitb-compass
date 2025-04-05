@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 		"A centralized dashboard for IIITB students to access tools, events, and resources.",
 };
 
+
 export default function RootLayout({
 	children,
 }: Readonly<{
