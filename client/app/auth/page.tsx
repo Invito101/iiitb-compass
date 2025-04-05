@@ -8,8 +8,6 @@ import { Github } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import spinner from "./spinner.png";
-import iiitbLogo from "./iiitb-logo.jpeg";
 import { GrGoogle } from "react-icons/gr";
 
 export default function Login() {
@@ -29,7 +27,7 @@ export default function Login() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">
         <Image
-          src={spinner}
+          src="/spinner.png"
           alt="Loading"
           width={128}
           height={128}
@@ -44,7 +42,7 @@ export default function Login() {
       <Card className="w-96 p-6 bg-black/70 border border-white/20 shadow-2xl backdrop-blur-md rounded-2xl flex flex-col justify-between h-[400px]">
         <CardHeader className="flex flex-col items-center gap-4">
           <Image
-            src={iiitbLogo}
+            src="/iiitb-logo.jpeg"
             alt="IIITB Logo"
             width={500}
             height={100}
