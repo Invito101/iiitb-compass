@@ -1,8 +1,10 @@
 "use client"
 
+import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Card,
@@ -29,13 +31,13 @@ export default function AddCabSharePage() {
   const router = useRouter();
   const { data } = useSession();
 
-  if (!data || !data.user) {
-    router.push("/auth");
-    return null;
-  }
+    if (!data || !data.user) {
+      // Redirect only after the component has finished rendering
+      router.push("/auth");
+      return;
+    }
 
   const user = data.user;
-  console.log("User data:", user);
   const form = useForm<CabSharingFormSchema>({
     resolver: zodResolver(cabSharingFormSchema),
     defaultValues: {
@@ -53,7 +55,7 @@ export default function AddCabSharePage() {
   return (
     <div className="min-h-screen flex flex-col overflow-auto">
       {/* Top Bar */}
-      {JSON.stringify(form.watch())}
+     /* {JSON.stringify(form.watch())} */
       <div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
         <div className="flex items-center gap-4">
           <Image src="/spinner.png" alt="Logo" width={40} height={40} />
@@ -120,19 +122,18 @@ export default function AddCabSharePage() {
                   name="date"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Date</FormLabel>
+                      <FormLabel>Date & Time</FormLabel>
                       <FormControl>
-                        <Input
-                          type="date"
-                          value={field.value.toISOString().split("T")[0]}
-                          onChange={(e) => field.onChange(new Date(e.target.value))}
-                          required
-                        />
+                      <DateTimePicker
+                        date={field.value}
+                        setDate={field.onChange}
+                      />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
 
                 <div className="flex justify-center">
                   <Button
