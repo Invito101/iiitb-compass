@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "IIITB Compass",
@@ -9,13 +11,22 @@ export const metadata: Metadata = {
 		"A centralized dashboard for IIITB students to access tools, events, and resources.",
 };
 
+const inter = Inter({
+	subsets: ["latin"],
+	display: "swap",
+});
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className="overflow-y-scroll" suppressHydrationWarning>
+		<html
+			lang="en"
+			className={cn("overflow-y-scroll", inter.className)}
+			suppressHydrationWarning
+		>
 			<body>
 				<SessionProvider>
 					<ThemeProvider

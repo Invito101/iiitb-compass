@@ -16,14 +16,93 @@ export default function DashboardLayout({
 	const userImage = user?.data?.user?.image || "/profile.jpg";
 	return (
 		<div className="min-h-screen flex flex-col">
-			<div className="h-28 flex items-center justify-between shadow-md px-8">
-				<div className="flex items-center gap-4">
+			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8">
+				<Link href={"/dashboard"} className="flex items-center gap-4">
 					<Image
 						src="/spinner.png"
 						alt="Logo"
 						width={40}
 						height={40}
 					/>
+				</Link>
+				<div className="relative">
+					<div
+						className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
+						onMouseEnter={(e) => {
+							const dashboardLink = e.currentTarget.querySelector(
+								'a[href="/dashboard"]'
+							) as HTMLElement;
+							const underline = e.currentTarget.querySelector(
+								".absolute"
+							) as HTMLElement;
+							if (dashboardLink && underline) {
+								underline.style.setProperty(
+									"--underline-width",
+									`${dashboardLink.offsetWidth}px`
+								);
+								underline.style.setProperty(
+									"--underline-left",
+									`${dashboardLink.offsetLeft}px`
+								);
+							}
+						}}
+					>
+						<div
+							className="absolute bottom-0 h-0.5 bg-purple-600 transition-all duration-300"
+							style={{
+								width: "var(--underline-width, 0)",
+								left: "var(--underline-left, 0)",
+							}}
+						/>
+						{[
+							{
+								href: "/dashboard",
+								label: "Dashboard",
+								className: "text-purple-600 font-semibold",
+							},
+							{ href: "/calendar", label: "Calendar" },
+							{ href: "/cabshare", label: "Cab Share" },
+							{ href: "/lostfound", label: "L&F" },
+							{ href: "/foodmenu", label: "Food Menu" },
+						].map(({ href, label, className = "" }) => (
+							<Link
+								key={href}
+								href={href}
+								className={`group relative ${className} text-muted-foreground hover:text-purple-600 transition-colors duration-300`}
+								onMouseEnter={(e) => {
+									const target = e.currentTarget;
+									const underline =
+										target.parentElement?.querySelector(
+											".absolute"
+										) as HTMLElement;
+									if (underline) {
+										underline.style.setProperty(
+											"--underline-width",
+											`${target.offsetWidth}px`
+										);
+										underline.style.setProperty(
+											"--underline-left",
+											`${target.offsetLeft}px`
+										);
+									}
+								}}
+								onMouseLeave={(e) => {
+									const underline =
+										e.currentTarget.parentElement?.querySelector(
+											".absolute"
+										) as HTMLElement;
+									if (underline) {
+										underline.style.setProperty(
+											"--underline-width",
+											"0"
+										);
+									}
+								}}
+							>
+								<span>{label}</span>
+							</Link>
+						))}
+					</div>
 				</div>
 
 				<div className="flex items-center gap-4">
@@ -51,8 +130,7 @@ export default function DashboardLayout({
 						href = "/cabshare";
 						label = "Cab Share";
 						imageSrc = "/cab.jpg";
-					}
-					else if( i === 3) {
+					} else if (i === 3) {
 						href = "/foodmenu";
 						label = "Food Menu";
 						imageSrc = "/food.png";
