@@ -24,7 +24,6 @@ import {
 } from "@/forms/cab-sharing/cabSharingSchema";
 import { useSession } from "next-auth/react";
 import { createCabSharing } from "@/forms/cab-sharing/action";
-import { useEffect } from "react";
 
 export default function AddCabSharePage() {
 	const { data, status } = useSession();

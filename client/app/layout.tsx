@@ -18,11 +18,7 @@ export default function RootLayout({
 		<html lang="en" className="overflow-y-scroll" suppressHydrationWarning>
 			<body>
 				<SessionProvider>
-					<ThemeProvider
-						defaultTheme="dark"
-						enableSystem
-						disableTransitionOnChange
-					>
+					<ThemeProvider enableSystem disableTransitionOnChange>
 						{children}
 					</ThemeProvider>
 				</SessionProvider>

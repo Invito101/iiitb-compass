@@ -22,9 +22,7 @@ export default function DashboardLayout({
 				</div>
 
 				<div className="flex items-center gap-4">
-					<div>
-						<ModeToggle />
-					</div>
+					<ModeToggle />
 					<Image
 						src="/profile.jpg"
 						alt="Account"

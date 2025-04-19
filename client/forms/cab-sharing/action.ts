@@ -65,3 +65,26 @@ export async function deleteCabSharing(id: string) {
 		message: "Cab sharing deleted successfully",
 	};
 }
+
+export async function getAllCabSharing(date: Date) {
+	const startOfDay = new Date(date);
+	startOfDay.setHours(0, 0, 0, 0);
+
+	const endOfDay = new Date(date);
+	endOfDay.setHours(23, 59, 59, 999);
+	const cabSharing = await prisma.cabShare.findMany({
+		include: {
+			user: {
+				include: {},
+			},
+		},
+		where: {
+			date: {
+				gte: startOfDay,
+				lte: endOfDay,
+			},
+		},
+	});
+
+	return cabSharing;
+}
