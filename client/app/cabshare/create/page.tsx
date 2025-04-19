@@ -35,6 +35,7 @@ export default function AddCabSharePage() {
   }
 
   const user = data.user;
+  console.log("User data:", user);
   const form = useForm<CabSharingFormSchema>({
     resolver: zodResolver(cabSharingFormSchema),
     defaultValues: {
@@ -52,6 +53,7 @@ export default function AddCabSharePage() {
   return (
     <div className="min-h-screen flex flex-col overflow-auto">
       {/* Top Bar */}
+      {JSON.stringify(form.watch())}
       <div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
         <div className="flex items-center gap-4">
           <Image src="/spinner.png" alt="Logo" width={40} height={40} />

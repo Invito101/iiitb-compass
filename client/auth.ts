@@ -13,7 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 				where: { email: session.user.email },
 			});
 
-			if (session.user && dbUser) {
+			if (session.user && dbUser && user) {
 				session.user.id = user.id;
 			}
 
