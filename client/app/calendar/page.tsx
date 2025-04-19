@@ -1,49 +1,119 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github } from "lucide-react";
-import { signIn } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { GrGoogle } from "react-icons/gr";
 
-export default function Login() {
-	const { data, status } = useSession();
-	const [loading, setLoading] = useState(true);
+type CabShare = {
+  id: number;
+  date: string;
+  time: string;
+  route: string;
+  contact: string;
+};
 
-	useEffect(() => {
-		const timer = setTimeout(() => setLoading(false), 1000);
-		return () => clearTimeout(timer);
-	}, []);
+export default function ViewCabShares() {
+  const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState("");
+  const [cabShares, setCabShares] = useState<CabShare[]>([]);
+  const [loading, setLoading] = useState(true);
 
-	if (loading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">
-				<Image
-					src="/spinner.png"
-					alt="Loading"
-					width={128}
-					height={128}
-					className="animate-spin border-4 border-white rounded-full shadow-xl"
-				/>
-			</div>
-		);
-	}
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
-	if (status != "authenticated") {
-		redirect("/auth");
-	}
+  useEffect(() => {
+    const saved = localStorage.getItem("cabshares");
+    if (saved) {
+      setCabShares(JSON.parse(saved));
+    }
+  }, []);
 
-	return (
-		<div className="h-full min-h-full ">
-			<iframe
-				src="https://calendar.google.com/calendar/embed?src=92734038c6cced005a2eda9a3c6350a548b06b1966f1e449c5759021253c1670%40group.calendar.google.com&ctz=Asia%2FKolkata"
-				className="border-none w-full h-full"
-				scrolling="no"
-			></iframe>
-		</div>
-	);
+  const filteredCabShares = selectedDate
+    ? cabShares.filter((cab) => cab.date === selectedDate)
+    : cabShares;
+
+  const formatDate = (dateStr: string) => {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">
+        <Image
+          src="/spinner.png"
+          alt="Loading"
+          width={128}
+          height={128}
+          className="animate-spin border-4 border-white rounded-full shadow-xl"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800 text-white p-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Available CabShares</h1>
+
+      <Card className="mb-8 max-w-md mx-auto border border-white/20 bg-black/40">
+        <CardHeader>
+          <CardTitle>Select Date</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+          />
+        </CardContent>
+      </Card>
+
+      {selectedDate && (
+        <Card className="mb-12 max-w-xl mx-auto border border-white/20 bg-black/40">
+          <CardHeader>
+            <CardTitle>
+              CabShares on {formatDate(selectedDate)}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {filteredCabShares.length === 0 ? (
+              <p>No cabshares found.</p>
+            ) : (
+              <ul className="space-y-4">
+                {filteredCabShares.map((cab) => (
+                  <li
+                    key={cab.id}
+                    className="p-4 border border-white/20 rounded bg-black/30"
+                  >
+                    <div><strong>Time:</strong> {cab.time}</div>
+                    <div><strong>Route:</strong> {cab.route}</div>
+                    <div><strong>Contact:</strong> {cab.contact}</div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="flex justify-center">
+        <Button 
+          onClick={() => router.push("/cabshare/create")}
+          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border"
+        >
+          Add CabShare
+        </Button>
+      </div>
+    </div>
+  );
 }

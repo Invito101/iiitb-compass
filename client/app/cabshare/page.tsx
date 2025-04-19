@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -23,6 +24,12 @@ export default function ViewCabShares() {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState("");
   const [cabShares, setCabShares] = useState<CabShare[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("cabshares");
@@ -39,6 +46,20 @@ export default function ViewCabShares() {
     const [year, month, day] = dateStr.split("-");
     return `${day}/${month}/${year}`;
   };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">
+        <Image
+          src="/spinner.png"
+          alt="Loading"
+          width={128}
+          height={128}
+          className="animate-spin border-4 border-white rounded-full shadow-xl"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800 text-white p-8">
