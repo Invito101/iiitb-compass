@@ -51,15 +51,7 @@ export default function AddCabSharePage() {
   });
 
   const onSubmit = (values: FormValues) => {
-    // validate contact number
-    if (!/^\d{10}$/.test(values.contact)) {
-      alert("Contact must be 10 digits.");
-      return;
-    }
-    const existing = JSON.parse(localStorage.getItem("cabshares") || "[]");
-    const newEntry = { id: Date.now(), ...values };
-    localStorage.setItem("cabshares", JSON.stringify([...existing, newEntry]));
-    router.push("/cabshare");
+
   };
 
   return (
@@ -160,27 +152,6 @@ export default function AddCabSharePage() {
                           </Command>
                         </PopoverContent>
                       </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Contact */}
-                <FormField
-                  control={form.control}
-                  name="contact"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Contact Number</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          maxLength={10}
-                          {...field}
-                          required
-                          className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10"
-                        />
-                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
