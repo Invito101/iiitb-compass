@@ -3,15 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession } from "next-auth/react";
 
 export default function DashboardLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const user = useSession();
+	const userName = user?.data?.user?.name || "User";
+	const userImage = user?.data?.user?.image || "/profile.jpg";
 	return (
 		<div className="min-h-screen flex flex-col">
-			<div className="h-28 flex items-center justify-between shadow-md px-6">
+			<div className="h-28 flex items-center justify-between shadow-md px-8">
 				<div className="flex items-center gap-4">
 					<Image
 						src="/spinner.png"
@@ -23,13 +28,12 @@ export default function DashboardLayout({
 
 				<div className="flex items-center gap-4">
 					<ModeToggle />
-					<Image
-						src="/profile.jpg"
-						alt="Account"
-						width={48}
-						height={48}
-						className="rounded-full object-cover cursor-pointer border-2 border-white"
-					/>
+					<Link href="/profile" className="h-8 w-8">
+						<Avatar>
+							<AvatarImage src={userImage} />
+							<AvatarFallback>{userName}</AvatarFallback>
+						</Avatar>
+					</Link>
 				</div>
 			</div>
 

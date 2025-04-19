@@ -5,7 +5,6 @@ import { CabSharingFormSchema } from "./cabSharingSchema";
 import { auth } from "@/auth";
 
 export async function createCabSharing(data: CabSharingFormSchema) {
-	console.log("User ID:");
 	const { origin, destination, date } = data;
 
 	const session = await auth();

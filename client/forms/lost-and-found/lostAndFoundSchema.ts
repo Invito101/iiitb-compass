@@ -1,11 +1,20 @@
 import { z } from "zod";
 
-export const lostAndFoundFormSchema = z.object({
+export const lostFormSchema = z.object({
 	lostItem: z.string().min(1, "Item name is required"),
 	location: z.string().min(1, "Location is required"),
 	date: z.date(),
-	userId: z.string().min(1, "User ID is required"),
 	description: z.string(),
 });
 
-export type LostAndFoundFormSchema = z.infer<typeof lostAndFoundFormSchema>;
+export type LostFormSchema = z.infer<typeof lostFormSchema>;
+
+export const foundFormSchema = z.object({
+	foundItem: z.string().min(1, "Item name is required"),
+	location: z.string().min(1, "Location is required"),
+	currentLocation: z.string().min(1, "Current location is required"),
+	date: z.date(),
+	description: z.string(),
+});
+
+export type FoundFormSchema = z.infer<typeof foundFormSchema>;

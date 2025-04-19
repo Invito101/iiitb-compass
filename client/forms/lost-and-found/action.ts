@@ -1,11 +1,20 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { LostAndFoundFormSchema } from "./lostAndFoundSchema";
+import { FoundFormSchema, LostFormSchema } from "./lostAndFoundSchema";
+import { auth } from "@/auth";
 
-export async function createLostItem(data: LostAndFoundFormSchema) {
-	const { lostItem, location, date, userId, description } = data;
+export async function createLostItem(data: LostFormSchema) {
+	const { lostItem, location, date, description } = data;
 
+	const session = await auth();
+	if (session?.user.id === undefined) {
+		return {
+			error: "User not found",
+		};
+	}
+
+	const userId = session.user.id;
 	const user = await prisma.user.findUnique({
 		where: {
 			id: userId,
@@ -35,4 +44,126 @@ export async function createLostItem(data: LostAndFoundFormSchema) {
 	};
 }
 
-export async function createFoundItem();
+export async function createFoundItem(data: FoundFormSchema) {
+	const { foundItem, currentLocation, location, date, description } = data;
+
+	const session = await auth();
+	if (session?.user.id === undefined) {
+		return {
+			error: "User not found",
+		};
+	}
+
+	const userId = session.user.id;
+	const user = await prisma.user.findUnique({
+		where: {
+			id: userId,
+		},
+	});
+
+	if (!user) {
+		return {
+			error: "User not found",
+		};
+	}
+
+	const foundItemEntry = await prisma.lostAndFound.create({
+		data: {
+			name: foundItem,
+			location,
+			date,
+			userId,
+			description,
+			type: "found",
+			currentLocation,
+		},
+	});
+
+	return {
+		foundItemEntry,
+		message: "Found item entry created successfully",
+	};
+}
+
+export async function getLostItems() {
+	const lostItems = await prisma.lostAndFound.findMany({
+		where: {
+			type: "lost",
+		},
+		include: {
+			user: {},
+		},
+	});
+
+	return lostItems;
+}
+
+export async function getFoundItems() {
+	const foundItems = await prisma.lostAndFound.findMany({
+		where: {
+			type: "found",
+		},
+		include: {
+			user: {},
+		},
+	});
+
+	return foundItems;
+}
+
+export async function deleteLostItem(id: string) {
+	const deletedItem = await prisma.lostAndFound.delete({
+		where: {
+			id,
+		},
+	});
+
+	return deletedItem;
+}
+
+export async function deleteFoundItem(id: string) {
+	const deletedItem = await prisma.lostAndFound.delete({
+		where: {
+			id,
+		},
+	});
+
+	return deletedItem;
+}
+
+export async function updateLostItem(id: string, data: LostFormSchema) {
+	const { lostItem, location, date, description } = data;
+
+	const updatedItem = await prisma.lostAndFound.update({
+		where: {
+			id,
+		},
+		data: {
+			name: lostItem,
+			location,
+			date,
+			description,
+		},
+	});
+
+	return updatedItem;
+}
+
+export async function updateFoundItem(id: string, data: FoundFormSchema) {
+	const { foundItem, currentLocation, location, date, description } = data;
+
+	const updatedItem = await prisma.lostAndFound.update({
+		where: {
+			id,
+		},
+		data: {
+			name: foundItem,
+			location,
+			date,
+			description,
+			currentLocation,
+		},
+	});
+
+	return updatedItem;
+}

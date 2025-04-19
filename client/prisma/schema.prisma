@@ -67,13 +67,14 @@ model CabShare {
 }
 
 model LostAndFound {
-    id          String   @id @default(cuid())
-    name        String
-    description String
-    date        DateTime
-    image       String?
-    location    String
-    type        String
+    id              String   @id @default(cuid())
+    name            String
+    description     String
+    date            DateTime
+    image           String?
+    currentLocation String?
+    location        String
+    type            String
 
     userId String
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
