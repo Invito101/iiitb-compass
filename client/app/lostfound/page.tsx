@@ -1,13 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 interface ItemEntry {
   type: "lost" | "found";
@@ -16,62 +15,17 @@ interface ItemEntry {
   currentLocation: string;
   contact: string;
   image: string;
+  date?: Date;
+  description?: string;
 }
 
 export default function LostAndFoundPage() {
-  const [showForm, setShowForm] = useState(false);
   const [items, setItems] = useState<ItemEntry[]>([]);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    setValue
-  } = useForm<ItemEntry>({
-    defaultValues: {
-      type: "lost",
-      itemName: "",
-      place: "",
-      currentLocation: "",
-      contact: "",
-      image: "",
-    },
-  });
+  const [activeTab, setActiveTab] = useState<"lost" | "found">("lost");
+  const pathname = usePathname();
 
-  const selectedType = watch("type");
-
-  const toggleForm = () => {
-    setShowForm(!showForm);
-    reset();
-  };
-
-  const onSubmit = (data: ItemEntry) => {
-    if (!data.itemName) return;
-
-    const exists = items.some((item) => item.itemName === data.itemName);
-
-    if (data.type === "lost" && exists) {
-      setItems((prev) =>
-        prev.map((item) =>
-          item.itemName === data.itemName ? data : item
-        )
-      );
-    } else {
-      setItems((prev) => [data, ...prev]);
-    }
-
-    reset();
-    setShowForm(false);
-  };
-
-  const handleEdit = (item: ItemEntry) => {
-    Object.entries(item).forEach(([key, value]) =>
-      setValue(key as keyof ItemEntry, value)
-    );
-    setItems((prev) =>
-      prev.filter((i) => i.itemName !== item.itemName)
-    );
-    setShowForm(true);
+  const handleTabChange = (value: string) => {
+    setActiveTab(value as "lost" | "found");
   };
 
   const handleDelete = (index: number) => {
@@ -95,6 +49,9 @@ export default function LostAndFoundPage() {
         )}
         <div className="flex flex-col gap-1">
           <p className="font-semibold text-lg">{item.itemName}</p>
+          {item.date && (
+            <p className="text-sm">📅 Date: {item.date.toLocaleDateString()}</p>
+          )}
           {item.type === "lost" ? (
             <p className="text-sm">📍 Lost at: {item.place}</p>
           ) : (
@@ -103,17 +60,21 @@ export default function LostAndFoundPage() {
               <p className="text-sm">📦 Currently At: {item.currentLocation}</p>
             </>
           )}
+          {item.description && (
+            <p className="text-sm">📝 Description: {item.description}</p>
+          )}
           <p className="text-sm">📞 Contact: {item.contact}</p>
         </div>
       </div>
       <div className="flex flex-col gap-2 ml-auto">
-        <Button
-          variant="outline"
-          className="bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
-          onClick={() => handleEdit(item)}
-        >
-          Edit
-        </Button>
+        <Link href={item.type === "lost" ? `/addlost?edit=${index}` : `/addfound?edit=${index}`}>
+          <Button
+            variant="outline"
+            className="bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
+          >
+            Edit
+          </Button>
+        </Link>
         <Button
           variant="outline"
           className="bg-gradient-to-br from-red-600 to-pink-600 text-white"
@@ -146,9 +107,9 @@ export default function LostAndFoundPage() {
 
       {/* Main Content */}
       <div className="w-full flex flex-col px-8 py-2 border-b border-border bg-background z-10 flex-1 overflow-hidden">
-        <Tabs defaultValue="lost" className="w-full">
+        <Tabs defaultValue="lost" className="w-full" onValueChange={handleTabChange}>
           <div className="flex items-center justify-between w-full">
-          <TabsList className="bg-transparent border-none shadow-none p-0 gap-2">
+            <TabsList className="bg-transparent border-none shadow-none p-0 gap-2">
               <TabsTrigger
                 value="lost"
                 className="px-4 py-2 rounded-md outline-none ring-0 focus:outline-none focus-visible:outline-none
@@ -167,66 +128,14 @@ export default function LostAndFoundPage() {
               </TabsTrigger>
             </TabsList>
 
-
+            <Link href={activeTab === "lost" ? "/lostfound/addlost" : "/lostfound/addfound"}>
             <Button
-              onClick={toggleForm}
-              className="ml-4 bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
-            >
-              + Add
-            </Button>
-          </div>
-
-          {/* Form Section */}
-          {showForm && (
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="mt-4 p-4 bg-muted rounded-md border border-border grid gap-4"
-            >
-              <div>
-                <Label htmlFor="type">Type</Label>
-                <select
-                  {...register("type")}
-                  className="w-full p-2 mt-1 border rounded-md bg-background text-foreground"
-                >
-                  <option value="lost">Lost</option>
-                  <option value="found">Found</option>
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="itemName">Item Name</Label>
-                <Input {...register("itemName")} placeholder="(e.g., Wallet)" />
-              </div>
-              <div>
-                <Label htmlFor="place">
-                  {selectedType === "found" ? "Place Found At" : "Place Lost At"}
-                </Label>
-                <Input {...register("place")} placeholder="(e.g., Canteen)" />
-              </div>
-              {selectedType === "found" && (
-                <div>
-                  <Label htmlFor="currentLocation">Currently At</Label>
-                  <Input
-                    {...register("currentLocation")}
-                    placeholder="(e.g., Security Desk)"
-                  />
-                </div>
-              )}
-              <div>
-                <Label htmlFor="contact">Contact</Label>
-                <Input {...register("contact")} placeholder="(e.g., phone/email)" />
-              </div>
-              <div>
-                <Label htmlFor="image">Image URL</Label>
-                <Input {...register("image")} placeholder="Paste image link (optional)" />
-              </div>
-              <Button
-                type="submit"
-                className="bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white mx-auto w-fit"
+                className="ml-4 bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
               >
-                Submit
+                + Add {activeTab === "lost" ? "lost item" : "found item"}
               </Button>
-            </form>
-          )}
+            </Link>
+          </div>
 
           {/* Lost Tab */}
           <TabsContent value="lost">

@@ -130,6 +130,10 @@ export default function DashboardLayout({
 						href = "/cabshare";
 						label = "Cab Share";
 						imageSrc = "/cab.jpg";
+					} else if (i === 2) {
+						href = "/lostfound";
+						label = "Lost & Found";
+						imageSrc = "/mindcraft.jpeg";
 					} else if (i === 3) {
 						href = "/foodmenu";
 						label = "Food Menu";

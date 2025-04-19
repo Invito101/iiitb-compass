@@ -100,7 +100,8 @@ const Section: React.FC<MenuCategory> = ({ title, items }) => (
               <Button variant="ghost" size="icon" aria-label="Downvote">
                 <ThumbsDown />
               </Button>
-              <Link href={`/review/${item.id}`}>
+<Link href={`/review/${item.id}`}>
+
                 <Button variant="ghost" size="icon" aria-label="Comment">
                   <MessageSquare />
                 </Button>
