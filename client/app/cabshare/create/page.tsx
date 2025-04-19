@@ -1,8 +1,10 @@
 "use client";
 
+import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -134,23 +136,11 @@ export default function AddCabSharePage() {
 									name="date"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Date</FormLabel>
+											<FormLabel>Date & Time</FormLabel>
 											<FormControl>
-												<Input
-													type="date"
-													value={
-														field.value
-															.toISOString()
-															.split("T")[0]
-													}
-													onChange={(e) =>
-														field.onChange(
-															new Date(
-																e.target.value
-															)
-														)
-													}
-													required
+												<DateTimePicker
+													date={field.value}
+													setDate={field.onChange}
 												/>
 											</FormControl>
 											<FormMessage />
