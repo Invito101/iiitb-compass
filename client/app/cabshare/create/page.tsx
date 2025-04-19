@@ -1,160 +1,166 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { DateTimePicker } from "@/components/ui/date-time-picker";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
+	Form,
+	FormField,
+	FormItem,
+	FormControl,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { ModeToggle } from "@/components/mode-toggle";
 import {
-  Command,
-  CommandList,
-  CommandItem,
-} from "@/components/ui/command";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-
-const routes = [
-  { label: "IIITB → Airport", value: "iiitb->airport" },
-  { label: "Airport → IIITB", value: "airport->iiitb" },
-];
+	cabSharingFormSchema,
+	CabSharingFormSchema,
+} from "@/forms/cab-sharing/cabSharingSchema";
+import { useSession } from "next-auth/react";
+import { createCabSharing } from "@/forms/cab-sharing/action";
 
 export default function AddCabSharePage() {
-  const [routeOpen, setRouteOpen] = useState(false);
-  const [newCabShare, setNewCabShare] = useState({
-    date: "",
-    time: "",
-    route: "iiitb->airport",
-    contact: "",
-  });
+	const { data, status } = useSession();
+	const router = useRouter();
+	const form = useForm<CabSharingFormSchema>({
+		resolver: zodResolver(cabSharingFormSchema),
+		defaultValues: {
+			origin: "",
+			destination: "",
+			date: new Date(),
+			// userId: "",
+		},
+	});
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
 
-  const router = useRouter();
+	if (status === "loading") return <p>Loading...</p>;
 
-  const addCabShare = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+	const onSubmit = async (values: CabSharingFormSchema) => {
+		const response = await createCabSharing(values);
+		console.log(response);
+		router.push("/cabshare");
+	};
 
-    if (!/^\d{10}$/.test(newCabShare.contact)) {
-      alert("Contact number must be exactly 10 digits.");
-      return;
-    }
+	return (
+		<div className="min-h-screen flex flex-col overflow-auto">
+			{/* Top Bar */}
+			{JSON.stringify(form.watch())}
+			<div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
+				<div className="flex items-center gap-4">
+					<Image
+						src="/spinner.png"
+						alt="Logo"
+						width={40}
+						height={40}
+					/>
+				</div>
+				<div className="flex items-center gap-4 bg-">
+					<ModeToggle />
+					<Image
+						src="/profile.jpg"
+						alt="Account"
+						width={48}
+						height={48}
+						className="rounded-full object-cover cursor-pointer border-2 border-black/10 dark:border-white"
+					/>
+				</div>
+			</div>
 
-    const existingCabShares = JSON.parse(localStorage.getItem("cabshares") || "[]");
+			{/* Content */}
+			<div className="p-8 flex-1">
+				<h1 className="text-3xl font-bold mb-6 text-center">
+					Add CabShare
+				</h1>
 
-    const newEntry = {
-      id: Date.now(), // unique id
-      ...newCabShare,
-    };
+				<Card className="max-w-xl mx-auto bg-transparent p-6 rounded-xl shadow-lg border border-black/10 dark:border-white/20">
+					<CardHeader>
+						<CardTitle>New CabShare</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<Form {...form}>
+							<form
+								onSubmit={form.handleSubmit(onSubmit)}
+								className="space-y-4 flex flex-col"
+							>
+								{/* Origin */}
+								<FormField
+									control={form.control}
+									name="origin"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Origin</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													placeholder="Enter origin"
+													required
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 
-    localStorage.setItem("cabshares", JSON.stringify([...existingCabShares, newEntry]));
+								{/* Destination */}
+								<FormField
+									control={form.control}
+									name="destination"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Destination</FormLabel>
+											<FormControl>
+												<Input
+													{...field}
+													placeholder="Enter destination"
+													required
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 
-    router.push("/cabshare");
-  };
+								{/* Date */}
+								<FormField
+									control={form.control}
+									name="date"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Date & Time</FormLabel>
+											<FormControl>
+												<DateTimePicker
+													date={field.value}
+													setDate={field.onChange}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800 text-white p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Add CabShare</h1>
-
-      <Card className="max-w-xl mx-auto bg-black/50 p-6 rounded-xl shadow-lg border border-white/20">
-        <CardHeader>
-          <CardTitle>New CabShare</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={addCabShare} className="space-y-4 flex-col flex">
-            <div>
-              <Label htmlFor="date">Date</Label>
-              <Input
-                id="date"
-                type="date"
-                value={newCabShare.date}
-                onChange={(e) => setNewCabShare({ ...newCabShare, date: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="time">Time</Label>
-              <Input
-                id="time"
-                type="time"
-                value={newCabShare.time}
-                onChange={(e) => setNewCabShare({ ...newCabShare, time: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <Label>Route</Label>
-              <Popover open={routeOpen} onOpenChange={setRouteOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className={cn(
-                      "bg-black/30 border-white/20 w-full justify-start"
-                    )}
-                  >
-                    {
-                      routes.find((r) => r.value === newCabShare.route)?.label ??
-                      "Select route"
-                    }
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0 bg-black/90 text-white">
-                  <Command className="bg-transparent text-white">
-                    <CommandList>
-                      {routes.map((route) => (
-                        <CommandItem
-                          key={route.value}
-                          className="hover:bg-white/10 cursor-pointer"
-                          onSelect={() => {
-                            setNewCabShare({ ...newCabShare, route: route.value });
-                            setRouteOpen(false);
-                          }}
-                        >
-                          {route.label}
-                        </CommandItem>
-                      ))}
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <div>
-              <Label htmlFor="contact">Contact Number</Label>
-              <Input
-                id="contact"
-                type="text"
-                inputMode="numeric"
-                pattern="\d{10}"
-                maxLength={10}
-                minLength={10}
-                value={newCabShare.contact}
-                onChange={(e) => setNewCabShare({ ...newCabShare, contact: e.target.value })}
-                required
-              />
-            </div>
-
-            <div className="flex justify-center items-center">
-              <Button
-                type="submit"
-                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border"
-              >
-                Add CabShare
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
-  );
+								<div className="flex justify-center">
+									<Button
+										type="submit"
+										className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
+									>
+										Add CabShare
+									</Button>
+								</div>
+							</form>
+						</Form>
+					</CardContent>
+				</Card>
+			</div>
+		</div>
+	);
 }

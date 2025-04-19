@@ -20,7 +20,7 @@ export default function Login() {
   }, []);
 
   if (status === "authenticated") {
-    redirect("/");
+    redirect("./dashboard");
   }
 
   if (loading) {
