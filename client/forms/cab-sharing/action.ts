@@ -2,10 +2,20 @@
 
 import prisma from "@/lib/prisma";
 import { CabSharingFormSchema } from "./cabSharingSchema";
+import { auth } from "@/auth";
 
 export async function createCabSharing(data: CabSharingFormSchema) {
-	const { origin, destination, date, userId } = data;
+	console.log("User ID:");
+	const { origin, destination, date } = data;
 
+	const session = await auth();
+	if (session?.user.id === undefined) {
+		return {
+			error: "User not found",
+		};
+	}
+
+	const userId = session.user.id;
 	const user = await prisma.user.findUnique({
 		where: {
 			id: userId,

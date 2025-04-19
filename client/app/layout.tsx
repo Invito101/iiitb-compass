@@ -9,15 +9,14 @@ export const metadata: Metadata = {
 		"A centralized dashboard for IIITB students to access tools, events, and resources.",
 };
 
-
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" className="h-full w-full" suppressHydrationWarning>
-			<body className="h-full w-full">
+		<html lang="en" className="overflow-y-scroll" suppressHydrationWarning>
+			<body>
 				<SessionProvider>
 					<ThemeProvider
 						attribute="class"
@@ -32,4 +31,3 @@ export default function RootLayout({
 		</html>
 	);
 }
-
