@@ -19,7 +19,8 @@ export default function RootLayout({
 			<body>
 				<SessionProvider>
 					<ThemeProvider
-						defaultTheme="dark"
+						attribute="class"
+						defaultTheme="system"
 						enableSystem
 						disableTransitionOnChange
 					>

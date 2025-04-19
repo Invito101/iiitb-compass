@@ -25,7 +25,6 @@ import {
 import { useSession } from "next-auth/react";
 import { createCabSharing } from "@/forms/cab-sharing/action";
 
-
 export default function AddCabSharePage() {
 	const { data, status } = useSession();
 	const router = useRouter();
