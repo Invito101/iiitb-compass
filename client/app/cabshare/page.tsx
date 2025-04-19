@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
 
 type CabShare = {
   id: number;
@@ -26,93 +27,112 @@ export default function ViewCabShares() {
   const [cabShares, setCabShares] = useState<CabShare[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // fake 500ms spinner
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
+  // load from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("cabshares");
-    if (saved) {
-      setCabShares(JSON.parse(saved));
-    }
+    if (saved) setCabShares(JSON.parse(saved));
   }, []);
 
-  const filteredCabShares = selectedDate
-    ? cabShares.filter((cab) => cab.date === selectedDate)
+  const filtered = selectedDate
+    ? cabShares.filter((c) => c.date === selectedDate)
     : cabShares;
 
-  const formatDate = (dateStr: string) => {
-    const [year, month, day] = dateStr.split("-");
-    return `${day}/${month}/${year}`;
+  const formatDate = (d: string) => {
+    const [y, m, day] = d.split("-");
+    return `${day}/${m}/${y}`;
   };
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">
+      <div className="flex min-h-screen items-center justify-center bg-black">
         <Image
           src="/spinner.png"
           alt="Loading"
           width={128}
           height={128}
-          className="animate-spin border-4 border-white rounded-full shadow-xl"
+          className="animate-spin border-4 border-black/10 dark:border-white rounded-full shadow-xl"
         />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800 text-white p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Available CabShares</h1>
-
-      <Card className="mb-8 max-w-md mx-auto border border-white/20 bg-black/40">
-        <CardHeader>
-          <CardTitle>Select Date</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+    <div className="min-h-screen flex flex-col overflow-auto">
+      {/* Top Bar */}
+      <div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
+        <div className="flex items-center gap-4">
+          <Image src="/spinner.png" alt="Logo" width={40} height={40} />
+        </div>
+        <div className="flex items-center gap-4">
+          <ModeToggle />
+          <Image
+            src="/profile.jpg"
+            alt="Account"
+            width={48}
+            height={48}
+            className="rounded-full object-cover cursor-pointer border-2 border-black/10 dark:border-white"
           />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {selectedDate && (
-        <Card className="mb-12 max-w-xl mx-auto border border-white/20 bg-black/40">
+      {/* Content */}
+      <div className="p-8 flex-1">
+        <h1 className="text-3xl font-bold mb-6 text-center">Available CabShares</h1>
+
+        <Card className="mb-8 max-w-md mx-auto border border-black/10 dark:border-white/20 bg-transparent shadow-lg">
           <CardHeader>
-            <CardTitle>
-              CabShares on {formatDate(selectedDate)}
-            </CardTitle>
+            <CardTitle>Select Date</CardTitle>
           </CardHeader>
           <CardContent>
-            {filteredCabShares.length === 0 ? (
-              <p>No cabshares found.</p>
-            ) : (
-              <ul className="space-y-4">
-                {filteredCabShares.map((cab) => (
-                  <li
-                    key={cab.id}
-                    className="p-4 border border-white/20 rounded bg-black/30"
-                  >
-                    <div><strong>Time:</strong> {cab.time}</div>
-                    <div><strong>Route:</strong> {cab.route}</div>
-                    <div><strong>Contact:</strong> {cab.contact}</div>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <Input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10"
+            />
           </CardContent>
         </Card>
-      )}
 
-      <div className="flex justify-center">
-        <Button 
-          onClick={() => router.push("/cabshare/create")}
-          className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border"
-        >
-          Add CabShare
-        </Button>
+        {selectedDate && (
+          <Card className="mb-12 max-w-xl mx-auto border border-black/10 dark:border-white/20 bg-transparent shadow-lg">
+            <CardHeader>
+              <CardTitle>CabShares on {formatDate(selectedDate)}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {filtered.length === 0 ? (
+                <p>No cabshares found.</p>
+              ) : (
+                <ul className="space-y-4">
+                  {filtered.map((cab) => (
+                    <li
+                      key={cab.id}
+                      className="p-4 border border-black/10 dark:border-white/20 rounded bg-white dark:bg-black/30"
+                    >
+                      <div><strong>Time:</strong> {cab.time}</div>
+                      <div><strong>Route:</strong> {cab.route}</div>
+                      <div><strong>Contact:</strong> {cab.contact}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        <div className="flex justify-center">
+          <Button
+            onClick={() => router.push("/cabshare/create")}
+            className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
+          >
+            Add CabShare
+          </Button>
+        </div>
       </div>
     </div>
   );
