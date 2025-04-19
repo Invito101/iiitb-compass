@@ -1,6 +1,9 @@
-import React from "react"; // Import React (necessary for JSX and hooks)
+"use client";
+ 
+import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
+ 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,24 +13,22 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
-interface DateTimePickerProps {
-  date: Date | undefined;
-  setDate: (date: Date) => void;
-}
-
-export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
+ 
+export function DateTimePicker() {
+  const [date, setDate] = React.useState<Date>();
   const [isOpen, setIsOpen] = React.useState(false);
-
+ 
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
-
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      setDate(selectedDate);  // Update the parent form's date
+      setDate(selectedDate);
     }
   };
-
-  const handleTimeChange = (type: "hour" | "minute" | "ampm", value: string) => {
+ 
+  const handleTimeChange = (
+    type: "hour" | "minute" | "ampm",
+    value: string
+  ) => {
     if (date) {
       const newDate = new Date(date);
       if (type === "hour") {
@@ -42,10 +43,10 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
           value === "PM" ? currentHours + 12 : currentHours - 12
         );
       }
-      setDate(newDate);  // Update the parent form's date
+      setDate(newDate);
     }
   };
-
+ 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
@@ -64,7 +65,8 @@ export function DateTimePicker({ date, setDate }: DateTimePickerProps) {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0 bg-purple-600">
+
         <div className="sm:flex">
           <Calendar
             mode="single"
