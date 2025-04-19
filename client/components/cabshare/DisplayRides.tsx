@@ -153,15 +153,15 @@ export default function DisplayRides({
 										>
 											<div>
 												<strong>Time:</strong>{" "}
-												{cab.time}
+												{cab.date.toLocaleTimeString([], {})}
 											</div>
 											<div>
 												<strong>Route:</strong>{" "}
-												{cab.route}
+												{cab.origin} to {cab.destination}
 											</div>
 											<div>
 												<strong>Contact:</strong>{" "}
-												{cab.contact}
+												{cab.user.phone ? cab.user.phone : "N/A"}
 											</div>
 										</li>
 									))}
