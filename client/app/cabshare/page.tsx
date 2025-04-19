@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import {
   Card,
   CardHeader,
@@ -12,6 +13,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 type CabShare = {
   id: number;
@@ -21,9 +30,17 @@ type CabShare = {
   contact: string;
 };
 
+type FormValues = {
+  date: string;
+};
+
 export default function ViewCabShares() {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState("");
+  const form = useForm<FormValues>({
+    defaultValues: { date: "" },
+  });
+  const selectedDate = form.watch("date");
+
   const [cabShares, setCabShares] = useState<CabShare[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -90,12 +107,24 @@ export default function ViewCabShares() {
             <CardTitle>Select Date</CardTitle>
           </CardHeader>
           <CardContent>
-            <Input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10"
-            />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit((values) => {
+                // TODO: handle submit
+              })} className="flex flex-col space-y-4">
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type="date" {...field} className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
           </CardContent>
         </Card>
 
