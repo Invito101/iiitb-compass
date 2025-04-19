@@ -1,7 +1,7 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import {
@@ -11,10 +11,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { Command, CommandList, CommandItem } from "@/components/ui/command";
 import {
   Form,
   FormField,
@@ -24,34 +21,32 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ModeToggle } from "@/components/mode-toggle";
-
-const routes = [
-  { label: "IIITB → Airport", value: "iiitb->airport" },
-  { label: "Airport → IIITB", value: "airport->iiitb" },
-];
-
-type FormValues = {
-  date: string;
-  time: string;
-  route: string;
-  contact: string;
-};
+import { cabSharingFormSchema, CabSharingFormSchema } from "@/forms/cab-sharing/cabSharingSchema";
+import { useSession } from "next-auth/react";
+import { createCabSharing } from "@/forms/cab-sharing/action";
 
 export default function AddCabSharePage() {
   const router = useRouter();
-  const [routeOpen, setRouteOpen] = useState(false);
+  const { data } = useSession();
 
-  const form = useForm<FormValues>({
+  if (!data || !data.user) {
+    router.push("/auth");
+    return null;
+  }
+
+  const user = data.user;
+  const form = useForm<CabSharingFormSchema>({
+    resolver: zodResolver(cabSharingFormSchema),
     defaultValues: {
-      date: "",
-      time: "",
-      route: routes[0].value,
-      contact: "",
+      origin: "",
+      destination: "",
+      date: new Date(),
+      userId: user.id,
     },
   });
 
-  const onSubmit = (values: FormValues) => {
-
+  const onSubmit = async (values: CabSharingFormSchema) => {
+      await createCabSharing(values);
   };
 
   return (
@@ -84,6 +79,39 @@ export default function AddCabSharePage() {
           <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex flex-col">
+                {/* Hidden userId */}
+                <input type="hidden" {...form.register("userId")} />
+
+                {/* Origin */}
+                <FormField
+                  control={form.control}
+                  name="origin"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Origin</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter origin" required />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Destination */}
+                <FormField
+                  control={form.control}
+                  name="destination"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Destination</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Enter destination" required />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 {/* Date */}
                 <FormField
                   control={form.control}
@@ -92,73 +120,23 @@ export default function AddCabSharePage() {
                     <FormItem>
                       <FormLabel>Date</FormLabel>
                       <FormControl>
-                        <Input type="date" {...field} required className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10" />
+                        <Input
+                          type="date"
+                          value={field.value.toISOString().split("T")[0]}
+                          onChange={(e) => field.onChange(new Date(e.target.value))}
+                          required
+                        />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Time */}
-                <FormField
-                  control={form.control}
-                  name="time"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Time</FormLabel>
-                      <FormControl>
-                        <Input type="time" {...field} required className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Route */}
-                <FormField
-                  control={form.control}
-                  name="route"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Route</FormLabel>
-                      <Popover open={routeOpen} onOpenChange={setRouteOpen}>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              className="w-full justify-start bg-white dark:bg-black/30 border border-black/10 dark:border-white/20"
-                            >
-                              {routes.find((r) => r.value === field.value)?.label}
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0 bg-white dark:bg-black/90">
-                          <Command className="bg-transparent">
-                            <CommandList>
-                              {routes.map((r) => (
-                                <CommandItem
-                                  key={r.value}
-                                  className="hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer"
-                                  onSelect={() => {
-                                    field.onChange(r.value);
-                                    setRouteOpen(false);
-                                  }}
-                                >
-                                  {r.label}
-                                </CommandItem>
-                              ))}
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
 
                 <div className="flex justify-center">
-                  <Button type="submit" className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10">
+                  <Button
+                    type="submit"
+                    className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
+                  >
                     Add CabShare
                   </Button>
                 </div>
