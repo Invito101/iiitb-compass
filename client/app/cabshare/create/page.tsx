@@ -24,7 +24,7 @@ import {
 } from "@/forms/cab-sharing/cabSharingSchema";
 import { useSession } from "next-auth/react";
 import { createCabSharing } from "@/forms/cab-sharing/action";
-import { useEffect } from "react";
+
 
 export default function AddCabSharePage() {
 	const { data, status } = useSession();
@@ -49,6 +49,7 @@ export default function AddCabSharePage() {
 	const onSubmit = async (values: CabSharingFormSchema) => {
 		const response = await createCabSharing(values);
 		console.log(response);
+		router.push("/cabshare");
 	};
 
 	return (
