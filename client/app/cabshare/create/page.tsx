@@ -48,6 +48,7 @@ export default function AddCabSharePage() {
 	const onSubmit = async (values: CabSharingFormSchema) => {
 		const response = await createCabSharing(values);
 		console.log(response);
+		router.push("/cabshare");
 	};
 
 	return (
