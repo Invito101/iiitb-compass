@@ -16,8 +16,9 @@ model User {
     accounts      Account[]
     sessions      Session[]
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    CabShare  CabShare[]
 }
 
 model Account {
@@ -46,6 +47,18 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model CabShare {
+    id          String   @id @default(cuid())
+    origin      String
+    destination String
+    date        DateTime
+    userId      String
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
