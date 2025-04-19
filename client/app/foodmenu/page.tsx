@@ -29,6 +29,7 @@ const weeklyMenu: Record<string, MenuCategory[]> = {
       items: [
         { id: "pancakes", name: "Pancakes", type: "veg" },
         { id: "omelette", name: "Omelette", type: "egg" },
+        { id: "potato", name: "potato", type: "veg" },
       ],
     },
     {

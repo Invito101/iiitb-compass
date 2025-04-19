@@ -48,6 +48,11 @@ export default function DashboardLayout({
 						label = "Cab Share";
 						imageSrc = "/cab.jpg";
 					}
+					else if( i === 3) {
+						href = "/foodmenu";
+						label = "Food Menu";
+						imageSrc = "/food.png";
+					}
 
 					return (
 						<Link

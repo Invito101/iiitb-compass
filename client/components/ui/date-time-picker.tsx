@@ -65,7 +65,7 @@ export function DateTimePicker() {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0 bg-purple-600">
+      <PopoverContent className="w-auto p-0">
 
         <div className="sm:flex">
           <Calendar
