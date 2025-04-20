@@ -14,17 +14,22 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
  
-export function DateTimePicker() {
-  const [date, setDate] = React.useState<Date>();
+export function DateTimePicker({
+  date,
+  setDate,
+}: {
+  date?: Date;
+  setDate: (date: Date | undefined) => void;
+}) {
   const [isOpen, setIsOpen] = React.useState(false);
- 
+
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       setDate(selectedDate);
     }
   };
- 
+
   const handleTimeChange = (
     type: "hour" | "minute" | "ampm",
     value: string
@@ -39,14 +44,17 @@ export function DateTimePicker() {
         newDate.setMinutes(parseInt(value));
       } else if (type === "ampm") {
         const currentHours = newDate.getHours();
-        newDate.setHours(
-          value === "PM" ? currentHours + 12 : currentHours - 12
-        );
+        const isPM = currentHours >= 12;
+        if (value === "AM" && isPM) {
+          newDate.setHours(currentHours - 12);
+        } else if (value === "PM" && !isPM) {
+          newDate.setHours(currentHours + 12);
+        }
       }
       setDate(newDate);
     }
   };
- 
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
@@ -66,7 +74,6 @@ export function DateTimePicker() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-
         <div className="sm:flex">
           <Calendar
             mode="single"
@@ -117,7 +124,7 @@ export function DateTimePicker() {
               </div>
               <ScrollBar orientation="horizontal" className="sm:hidden" />
             </ScrollArea>
-            <ScrollArea className="">
+            <ScrollArea>
               <div className="flex sm:flex-col p-2">
                 {["AM", "PM"].map((ampm) => (
                   <Button
