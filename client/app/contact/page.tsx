@@ -24,21 +24,21 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: "Akshay K M",
-    role: "UI/UX Developer",
+    role: "Junior Developer",
     bio: "Akshay is new to web development but eager to learn and explore more!",
     image: "/akshay.jpeg",
     linkedin: "https://www.linkedin.com/in/akshay-k-m-227804304/",
   },
   {
     name: "Anurag Rao U",
-    role: "Backend Developer",
+    role: "Lead Developer",
     bio: "Anurag is the one that actually gets things to work. He is a backend developer with a passion for coding!",
     image: "anurag.jpeg",
     linkedin: "https://www.linkedin.com/in/anurag-rao-u-0846761b2/",
   },
   {
     name: "S Arjun Sai",
-    role: "UI/UX Developer",
+    role: "Junior Developer",
     bio: "Arjun is new to web development and is looking forward to learn new things along the way!",
     image: "arjun.jpeg",
     linkedin: "https://www.linkedin.com/in/arjun-sai/",

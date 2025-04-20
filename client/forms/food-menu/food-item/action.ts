@@ -25,6 +25,19 @@ export async function rateFoodItem({ data }: { data: FoodItemSchema }) {
 		};
 	}
 
+	const alreadyExists = await prisma.foodItemRating.findFirst({
+		where: {
+			foodMenuEntryId: foodEntryId,
+			userId: userId,
+		},
+	});
+
+	if (alreadyExists) {
+		return {
+			error: "You have already rated this food item",
+		};
+	}
+
 	const foodItemRating = await prisma.foodItemRating.create({
 		data: {
 			userId,
