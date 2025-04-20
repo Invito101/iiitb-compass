@@ -17,10 +17,11 @@ model User {
     accounts      Account[]
     sessions      Session[]
 
-    createdAt    DateTime       @default(now())
-    updatedAt    DateTime       @updatedAt
-    CabShare     CabShare[]
-    LostAndFound LostAndFound[]
+    createdAt      DateTime         @default(now())
+    updatedAt      DateTime         @updatedAt
+    CabShare       CabShare[]
+    LostAndFound   LostAndFound[]
+    FoodItemRating FoodItemRating[]
 }
 
 model Account {
@@ -81,4 +82,56 @@ model LostAndFound {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model FoodMenuItems {
+    id          String  @id @default(cuid())
+    name        String
+    description String?
+
+    dietType String[]
+
+    FoodMenuEntries FoodMenuEntries[]
+}
+
+model FoodItemRating {
+    id       String  @id @default(cuid())
+    rating   Int
+    comment  String?
+    status   String
+    imageUrl String?
+
+    foodMenuEntryId String
+    foodMenuEntry   FoodMenuEntries @relation(fields: [foodMenuEntryId], references: [id], onDelete: Cascade)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model FoodMenuCycle {
+    id String @id @default(cuid())
+
+    startDate       DateTime
+    endDate         DateTime
+    weekNumber      Int
+    FoodMenuEntries FoodMenuEntries[]
+}
+
+model FoodMenuEntries {
+    id String @id @default(cuid())
+
+    foodMenuCycleId String
+    foodMenuCycle   FoodMenuCycle @relation(fields: [foodMenuCycleId], references: [id], onDelete: Cascade)
+
+    foodItemId String
+    foodItem   FoodMenuItems @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+    dayOfWeek  String
+    mealType   String
+
+    createdAt      DateTime         @default(now())
+    updatedAt      DateTime         @updatedAt
+    FoodItemRating FoodItemRating[]
 }
