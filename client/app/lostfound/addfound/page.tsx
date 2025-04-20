@@ -39,8 +39,15 @@ import { Navbar } from "@/components/general/Navbar";
 
 export default function AddFoundItemPage() {
 	const router = useRouter();
-	const searchParams = useSearchParams();
 	const { data, status } = useSession();
+
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
+
+	const searchParams = useSearchParams();
 	const editIndex = searchParams.get("edit");
 
 	const form = useForm<FoundFormSchema>({
@@ -61,12 +68,7 @@ export default function AddFoundItemPage() {
 	}, [status, router]);
 
 	const onSubmit = async (data: FoundFormSchema) => {
-		// Here you would typically send this data to your backend
-		// or store it in a global state management solution
-		console.log("Found item form submitted:", data);
-
 		await createFoundItem(data);
-		// For now, just navigate back to the main page
 		router.push("/lostfound");
 	};
 

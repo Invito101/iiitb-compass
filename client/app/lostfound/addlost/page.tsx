@@ -39,8 +39,14 @@ import { Navbar } from "@/components/general/Navbar";
 
 export default function AddLostItemPage() {
 	const router = useRouter();
-	const searchParams = useSearchParams();
 	const { data, status } = useSession();
+
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
+	const searchParams = useSearchParams();
 	const editIndex = searchParams.get("edit");
 
 	const form = useForm<LostFormSchema>({

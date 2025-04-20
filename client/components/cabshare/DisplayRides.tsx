@@ -33,13 +33,12 @@ export default function DisplayRides({
 	const router = useRouter();
 	const { data, status } = useSession();
 
-
 	useEffect(() => {
 		if (status === "unauthenticated") {
-		  router.push("/auth");
+			router.push("/auth");
 		}
-	  }, [status, router]);
-	  
+	}, [status, router]);
+
 	const userName = data?.user?.name || "User";
 	const userImage = data?.user?.image || "/profile.png";
 
@@ -51,8 +50,6 @@ export default function DisplayRides({
 	const selectedDate = form.watch("date");
 
 	const [loading, setLoading] = useState(true);
-
-
 
 	const startOfSelectedDate = new Date(selectedDate);
 	startOfSelectedDate.setHours(0, 0, 0, 0);
@@ -69,7 +66,6 @@ export default function DisplayRides({
 		const [y, m, day] = d.split("-");
 		return `${day}/${m}/${y}`;
 	};
-
 
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">

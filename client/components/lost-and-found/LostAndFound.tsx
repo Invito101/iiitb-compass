@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { lostAndFoundWithUserType } from "@/types/prisma-types";
 import LostAndFoundComponent from "./LostAndFoundComponent";
 import { Navbar } from "../general/Navbar";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function LostAndFound({
 	lostItems,
@@ -15,6 +17,15 @@ export default function LostAndFound({
 	lostItems: lostAndFoundWithUserType[];
 	foundItems: lostAndFoundWithUserType[];
 }) {
+	const router = useRouter();
+	const { data, status } = useSession();
+
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
+
 	const [activeTab, setActiveTab] = React.useState<"lost" | "found">("lost");
 
 	const handleTabChange = (value: string) => {

@@ -9,15 +9,24 @@ import { Trash } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useEffect } from "react";
 
 export default function LostAndFoundComponent({
 	items,
 }: {
 	items: lostAndFoundWithUserType[];
 }) {
-	const { data } = useSession();
-	const currentUserId = data?.user.id;
+	const { data, status } = useSession();
+
 	const router = useRouter();
+
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
+
+	const currentUserId = data?.user.id;
 
 	const handleDelete = async (id: string) => {
 		try {
