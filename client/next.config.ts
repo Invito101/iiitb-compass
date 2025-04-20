@@ -1,7 +1,16 @@
-import type { NextConfig } from "next";
+// next.config.ts
+import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: [
+      'avatars.githubusercontent.com',
+      // any other hosts you pull images from:
+      // 'res.cloudinary.com',
+      // 'lh3.googleusercontent.com',
+    ],
+  },
+  // ...other Next.js settings
 };
 
 export default nextConfig;

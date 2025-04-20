@@ -213,7 +213,7 @@ export default function DisplayFoodItem({
                 </Link>
 				
                 <Button type="submit" 
-				className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10 text-white"
+				className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10 text-black dark:text-white"
 				>Submit Review</Button>
               </div>
             </form>
