@@ -44,6 +44,7 @@ import {
 } from "../ui/dropdown-menu";
 import { LogOut, UserIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { Navbar } from "../general/Navbar";
 
 export default function ProfilePageComponenet({ user }: { user: User }) {
 	const [isLoading, setIsLoading] = useState(false);
@@ -71,137 +72,7 @@ export default function ProfilePageComponenet({ user }: { user: User }) {
 	};
 	return (
 		<div className="flex flex-col w-full">
-			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8 w-full">
-				<Link href={"/dashboard"} className="flex items-center gap-4">
-					<Image
-						src="/spinner.png"
-						alt="Logo"
-						width={40}
-						height={40}
-					/>
-				</Link>
-				<div className="relative">
-					<div
-						className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
-						onMouseEnter={(e) => {
-							const foodMenuLink = e.currentTarget.querySelector(
-								'a[href="/foodmenu"]'
-							) as HTMLElement;
-							const underline = e.currentTarget.querySelector(
-								".absolute"
-							) as HTMLElement;
-							if (foodMenuLink && underline) {
-								underline.style.setProperty(
-									"--underline-width",
-									`${foodMenuLink.offsetWidth}px`
-								);
-								underline.style.setProperty(
-									"--underline-left",
-									`${foodMenuLink.offsetLeft}px`
-								);
-							}
-						}}
-					>
-						<div
-							className="absolute bottom-0 h-0.5 bg-purple-600 transition-all duration-300"
-							style={{
-								width: "var(--underline-width, 0)",
-								left: "var(--underline-left, 0)",
-							}}
-						/>
-						{[
-							{ href: "/dashboard", label: "Dashboard" },
-							{ href: "/calendar", label: "Calendar" },
-							{ href: "/cabshare", label: "Cab Share" },
-							{ href: "/lostfound", label: "L&F" },
-							{ href: "/foodmenu", label: "Food Menu" },
-						].map(({ href, label = "" }) => (
-							<Link
-								key={href}
-								href={href}
-								className={`group relative text-muted-foreground hover:text-purple-600 transition-colors duration-300`}
-								onMouseEnter={(e) => {
-									const target = e.currentTarget;
-									const underline =
-										target.parentElement?.querySelector(
-											".absolute"
-										) as HTMLElement;
-									if (underline) {
-										underline.style.setProperty(
-											"--underline-width",
-											`${target.offsetWidth}px`
-										);
-										underline.style.setProperty(
-											"--underline-left",
-											`${target.offsetLeft}px`
-										);
-									}
-								}}
-								onMouseLeave={(e) => {
-									const underline =
-										e.currentTarget.parentElement?.querySelector(
-											".absolute"
-										) as HTMLElement;
-									if (underline) {
-										underline.style.setProperty(
-											"--underline-width",
-											"0"
-										);
-									}
-								}}
-							>
-								<span>{label}</span>
-							</Link>
-						))}
-					</div>
-				</div>
-
-				<div className="flex items-center gap-4">
-					<ModeToggle />
-					<DropdownMenu modal={false}>
-						<DropdownMenuTrigger asChild>
-							<Avatar className="h-8 w-8 cursor-pointer">
-								<AvatarImage
-									src={user.image || "/profile.jpg"}
-								/>
-								<AvatarFallback>
-									{user.name?.charAt(0) || "U"}
-								</AvatarFallback>
-							</Avatar>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" className="w-56">
-							<DropdownMenuLabel>
-								<div className="flex flex-col space-y-1">
-									<p className="text-sm font-medium">
-										{user.name}
-									</p>
-									<p className="text-xs text-muted-foreground truncate">
-										{user.email}
-									</p>
-								</div>
-							</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem asChild>
-								<Link
-									href="/profile"
-									className="cursor-pointer w-full"
-								>
-									<UserIcon className="mr-2 h-4 w-4" />
-									<span>Profile</span>
-								</Link>
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem
-								className="text-red-600 focus:text-red-600 cursor-pointer"
-								onClick={() => signOut()}
-							>
-								<LogOut className="mr-2 h-4 w-4" />
-								<span>Log out</span>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
-			</div>
+			<Navbar></Navbar>
 
 			<div className="flex-1 p-8 max-w-7xl mx-auto w-full">
 				<div className="flex flex-row justify-between mb-6">

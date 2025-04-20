@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { lostAndFoundWithUserType } from "@/types/prisma-types";
 import LostPage from "./LostPage";
 import FoundPage from "./FoundPage";
+import { Navbar } from "../general/Navbar";
 
 export default function LostAndFound({
 	lostItems,
@@ -27,27 +28,7 @@ export default function LostAndFound({
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-foreground overflow-hidden">
-			{/* Top Bar */}
-			<div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
-				<div className="flex items-center gap-4">
-					<Image
-						src="/spinner.png"
-						alt="Logo"
-						width={40}
-						height={40}
-					/>
-				</div>
-				<div className="flex items-center gap-4">
-					<ModeToggle />
-					<Image
-						src="/profile.jpg"
-						alt="Account"
-						width={48}
-						height={48}
-						className="rounded-full object-cover border-2 border-white"
-					/>
-				</div>
-			</div>
+			<Navbar></Navbar>
 
 			{/* Main Content */}
 			<div className="w-full flex flex-col px-8 py-2 border-b border-border bg-background z-10 flex-1 overflow-hidden">

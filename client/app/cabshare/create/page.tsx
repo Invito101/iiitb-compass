@@ -26,6 +26,7 @@ import { useSession } from "next-auth/react";
 import { createCabSharing } from "@/forms/cab-sharing/action";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Navbar } from "@/components/general/Navbar";
 
 export default function AddCabSharePage() {
 	const { data, status } = useSession();
@@ -57,109 +58,7 @@ export default function AddCabSharePage() {
 
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">
-			{/* Navigation Bar */}
-			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8">
-				<Link href={"/dashboard"} className="flex items-center gap-4">
-					<Image
-						src="/spinner.png"
-						alt="Logo"
-						width={40}
-						height={40}
-					/>
-				</Link>
-				<div className="relative">
-					<div
-						className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
-						onMouseEnter={(e) => {
-							const cabShareLink = e.currentTarget.querySelector(
-								'a[href="/cabshare"]'
-							) as HTMLElement;
-							const underline = e.currentTarget.querySelector(
-								".absolute"
-							) as HTMLElement;
-							if (cabShareLink && underline) {
-								underline.style.setProperty(
-									"--underline-width",
-									`${cabShareLink.offsetWidth}px`
-								);
-								underline.style.setProperty(
-									"--underline-left",
-									`${cabShareLink.offsetLeft}px`
-								);
-							}
-						}}
-					>
-						<div
-							className="absolute bottom-0 h-0.5 bg-purple-600 transition-all duration-300"
-							style={{
-								width: "var(--underline-width, 0)",
-								left: "var(--underline-left, 0)",
-							}}
-						/>
-						{[
-							{
-								href: "/dashboard",
-								label: "Dashboard",
-							},
-							{ href: "/calendar", label: "Calendar" },
-							{
-								href: "/cabshare",
-								label: "Cab Share",
-								className: "text-purple-600 font-semibold",
-							},
-							{ href: "/lostfound", label: "L&F" },
-							{ href: "/foodmenu", label: "Food Menu" },
-						].map(({ href, label, className = "" }) => (
-							<Link
-								key={href}
-								href={href}
-								className={`group relative ${className} text-muted-foreground hover:text-purple-600 transition-colors duration-300`}
-								onMouseEnter={(e) => {
-									const target = e.currentTarget;
-									const underline =
-										target.parentElement?.querySelector(
-											".absolute"
-										) as HTMLElement;
-									if (underline) {
-										underline.style.setProperty(
-											"--underline-width",
-											`${target.offsetWidth}px`
-										);
-										underline.style.setProperty(
-											"--underline-left",
-											`${target.offsetLeft}px`
-										);
-									}
-								}}
-								onMouseLeave={(e) => {
-									const underline =
-										e.currentTarget.parentElement?.querySelector(
-											".absolute"
-										) as HTMLElement;
-									if (underline) {
-										underline.style.setProperty(
-											"--underline-width",
-											"0"
-										);
-									}
-								}}
-							>
-								<span>{label}</span>
-							</Link>
-						))}
-					</div>
-				</div>
-
-				<div className="flex items-center gap-4">
-					<ModeToggle />
-					<Link href="/profile" className="h-8 w-8">
-						<Avatar>
-							<AvatarImage src={userImage} />
-							<AvatarFallback>{userName}</AvatarFallback>
-						</Avatar>
-					</Link>
-				</div>
-			</div>
+			<Navbar></Navbar>
 
 			{/* Content */}
 			<div className="p-8 flex-1">

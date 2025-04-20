@@ -15,173 +15,185 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createLostItem } from "@/forms/lost-and-found/action";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
 } from "@/components/ui/form";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { ModeToggle } from "@/components/mode-toggle";
 
-import { lostFormSchema, LostFormSchema } from "@/forms/lost-and-found/lostAndFoundSchema";
+import {
+	lostFormSchema,
+	LostFormSchema,
+} from "@/forms/lost-and-found/lostAndFoundSchema";
+import { Navbar } from "@/components/general/Navbar";
 
 export default function AddLostItemPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const editIndex = searchParams.get("edit");
-  
-  const form = useForm<LostFormSchema>({
-    resolver: zodResolver(lostFormSchema),
-    defaultValues: {
-      lostItem: "",
-      location: "",
-      date: new Date(),
-      description: "",
-    },
-  });
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const editIndex = searchParams.get("edit");
 
-  const onSubmit = async (data: LostFormSchema) => {
-    // Here you would typically send this data to your backend
-    // or store it in a global state management solution
-    console.log("Lost item form submitted:", data);
-    
-    await createLostItem(data);
-    // For now, just navigate back to the main page
-    router.push("/lostfound");
-  };
+	const form = useForm<LostFormSchema>({
+		resolver: zodResolver(lostFormSchema),
+		defaultValues: {
+			lostItem: "",
+			location: "",
+			date: new Date(),
+			description: "",
+		},
+	});
 
-  return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* Top Bar */}
-      <div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
-        <div className="flex items-center gap-4">
-          <Image src="/spinner.png" alt="Logo" width={40} height={40} />
-        </div>
-        <div className="flex items-center gap-4">
-          <ModeToggle />
-          <Image
-            src="/profile.jpg"
-            alt="Account"
-            width={48}
-            height={48}
-            className="rounded-full object-cover border-2 border-white"
-          />
-        </div>
-      </div>
+	const onSubmit = async (data: LostFormSchema) => {
+		// Here you would typically send this data to your backend
+		// or store it in a global state management solution
+		console.log("Lost item form submitted:", data);
 
-      {/* Main Content */}
-      <div className="flex-1 container max-w-2xl mx-auto py-8">
-        <div className="bg-card p-6 rounded-lg shadow-md border border-border">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="lostItem"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Item Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="What did you lose?" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+		await createLostItem(data);
+		// For now, just navigate back to the main page
+		router.push("/lostfound");
+	};
 
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Location</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Where did you last see it?" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+	return (
+		<div className="min-h-screen flex flex-col bg-background text-foreground">
+			<Navbar></Navbar>
 
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Date Lost</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className="w-full pl-3 text-left font-normal flex justify-between items-center"
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+			{/* Main Content */}
+			<div className="flex-1 container max-w-2xl mx-auto py-8">
+				<div className="bg-card p-6 rounded-lg shadow-md border border-border">
+					<Form {...form}>
+						<form
+							onSubmit={form.handleSubmit(onSubmit)}
+							className="space-y-6"
+						>
+							<FormField
+								control={form.control}
+								name="lostItem"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Item Name</FormLabel>
+										<FormControl>
+											<Input
+												placeholder="What did you lose?"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Describe the item (color, brand, distinguishing features)"
-                        className="resize-none"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+							<FormField
+								control={form.control}
+								name="location"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Location</FormLabel>
+										<FormControl>
+											<Input
+												placeholder="Where did you last see it?"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 
-              <div className="flex justify-between pt-4">
-                <Link href="/lostfound">
-                  <Button variant="outline" type="button">Cancel</Button>
-                </Link>
-                <Button 
-                  type="submit"
-                  className="bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
-                >
-                  Submit
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </div>
-      </div>
-    </div>
-  );
+							<FormField
+								control={form.control}
+								name="date"
+								render={({ field }) => (
+									<FormItem className="flex flex-col">
+										<FormLabel>Date Lost</FormLabel>
+										<Popover>
+											<PopoverTrigger asChild>
+												<FormControl>
+													<Button
+														variant="outline"
+														className="w-full pl-3 text-left font-normal flex justify-between items-center"
+													>
+														{field.value ? (
+															format(
+																field.value,
+																"PPP"
+															)
+														) : (
+															<span>
+																Pick a date
+															</span>
+														)}
+														<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent
+												className="w-auto p-0"
+												align="start"
+											>
+												<Calendar
+													mode="single"
+													selected={field.value}
+													onSelect={field.onChange}
+													disabled={(date) =>
+														date > new Date() ||
+														date <
+															new Date(
+																"1900-01-01"
+															)
+													}
+													initialFocus
+												/>
+											</PopoverContent>
+										</Popover>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<FormField
+								control={form.control}
+								name="description"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Description</FormLabel>
+										<FormControl>
+											<Textarea
+												placeholder="Describe the item (color, brand, distinguishing features)"
+												className="resize-none"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<div className="flex justify-between pt-4">
+								<Link href="/lostfound">
+									<Button variant="outline" type="button">
+										Cancel
+									</Button>
+								</Link>
+								<Button
+									type="submit"
+									className="bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
+								>
+									Submit
+								</Button>
+							</div>
+						</form>
+					</Form>
+				</div>
+			</div>
+		</div>
+	);
 }

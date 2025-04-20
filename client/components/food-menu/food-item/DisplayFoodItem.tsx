@@ -21,6 +21,7 @@ import {
 } from "@/forms/food-menu/food-item/foodItemSchema";
 import { rateFoodItem } from "@/forms/food-menu/food-item/action";
 import { useRouter } from "next/navigation";
+import { Navbar } from "@/components/general/Navbar";
 
 export default function DisplayFoodItem({
 	foodEntry,
@@ -28,9 +29,6 @@ export default function DisplayFoodItem({
 	foodEntry: foodMenuEntryWithItemAndRatingType;
 }) {
 	const [hoveredRating, setHoveredRating] = useState(0);
-	const session = useSession();
-	const userName = session?.data?.user?.name || "User";
-	const userImage = session?.data?.user?.image || "/profile.jpg";
 
 	const {
 		register,
@@ -64,109 +62,7 @@ export default function DisplayFoodItem({
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background">
-			{/* Navigation Bar */}
-			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8 w-full">
-				<Link href={"/dashboard"} className="flex items-center gap-4">
-					<Image
-						src="/spinner.png"
-						alt="Logo"
-						width={40}
-						height={40}
-					/>
-				</Link>
-				<div className="relative">
-					<div
-						className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
-						onMouseEnter={(e) => {
-							const foodMenuLink = e.currentTarget.querySelector(
-								'a[href="/foodmenu"]'
-							) as HTMLElement;
-							const underline = e.currentTarget.querySelector(
-								".absolute"
-							) as HTMLElement;
-							if (foodMenuLink && underline) {
-								underline.style.setProperty(
-									"--underline-width",
-									`${foodMenuLink.offsetWidth}px`
-								);
-								underline.style.setProperty(
-									"--underline-left",
-									`${foodMenuLink.offsetLeft}px`
-								);
-							}
-						}}
-					>
-						<div
-							className="absolute bottom-0 h-0.5 bg-purple-600 transition-all duration-300"
-							style={{
-								width: "var(--underline-width, 0)",
-								left: "var(--underline-left, 0)",
-							}}
-						/>
-						{[
-							{
-								href: "/dashboard",
-								label: "Dashboard",
-							},
-							{ href: "/calendar", label: "Calendar" },
-							{ href: "/cabshare", label: "Cab Share" },
-							{ href: "/lostfound", label: "L&F" },
-							{
-								href: "/foodmenu",
-								label: "Food Menu",
-								className: "text-purple-600 font-semibold",
-							},
-						].map(({ href, label, className = "" }) => (
-							<Link
-								key={href}
-								href={href}
-								className={`group relative ${className} text-muted-foreground hover:text-purple-600 transition-colors duration-300`}
-								onMouseEnter={(e) => {
-									const target = e.currentTarget;
-									const underline =
-										target.parentElement?.querySelector(
-											".absolute"
-										) as HTMLElement;
-									if (underline) {
-										underline.style.setProperty(
-											"--underline-width",
-											`${target.offsetWidth}px`
-										);
-										underline.style.setProperty(
-											"--underline-left",
-											`${target.offsetLeft}px`
-										);
-									}
-								}}
-								onMouseLeave={(e) => {
-									const underline =
-										e.currentTarget.parentElement?.querySelector(
-											".absolute"
-										) as HTMLElement;
-									if (underline) {
-										underline.style.setProperty(
-											"--underline-width",
-											"0"
-										);
-									}
-								}}
-							>
-								<span>{label}</span>
-							</Link>
-						))}
-					</div>
-				</div>
-
-				<div className="flex items-center gap-4">
-					<ModeToggle />
-					<Link href="/profile" className="h-8 w-8">
-						<Avatar>
-							<AvatarImage src={userImage} />
-							<AvatarFallback>{userName}</AvatarFallback>
-						</Avatar>
-					</Link>
-				</div>
-			</div>
+			<Navbar></Navbar>
 
 			{/* Content Section */}
 			<div className="flex flex-col justify-center items-center py-8 flex-grow px-8 -mt-15">
