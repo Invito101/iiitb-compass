@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
+import ProfilePageComponenet from "@/components/profile/ProfilePageComponenet";
 import prisma from "@/lib/prisma";
 
-export async function ProfilePage() {
+export default async function ProfilePage() {
 	const session = await auth();
 	if (!session) {
 		return <div>Unauthorized</div>;
@@ -20,5 +21,5 @@ export async function ProfilePage() {
 	if (!user) {
 		return <div>User not found</div>;
 	}
-	return <div></div>;
+	return <ProfilePageComponenet user={user}></ProfilePageComponenet>;
 }
