@@ -95,8 +95,6 @@ export default function DashboardLayout() {
 					))}
 				</div>
 			</div>
-
-			{children}
 		</div>
 	);
 }
