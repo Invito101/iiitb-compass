@@ -83,9 +83,6 @@ export default function AddCabSharePage() {
 				</h1>
 
 				<Card className="max-w-xl mx-auto bg-transparent p-6 rounded-xl shadow-lg border border-black/10 dark:border-white/20">
-					<CardHeader>
-						<CardTitle>New CabShare</CardTitle>
-					</CardHeader>
 					<CardContent>
 						<Form {...form}>
 							<form
@@ -147,7 +144,7 @@ export default function AddCabSharePage() {
 										</FormItem>
 									)}
 								/>
-								<div className="flex justify-between">
+								<div className="flex justify-between mt-4">
 									<Button
 										type="button"
 										variant="outline"
