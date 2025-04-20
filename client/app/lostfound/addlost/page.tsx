@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { ModeToggle } from "@/components/mode-toggle";
-
 import {
 	lostFormSchema,
 	LostFormSchema,
@@ -40,6 +40,7 @@ import { Navbar } from "@/components/general/Navbar";
 export default function AddLostItemPage() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { data, status } = useSession();
 	const editIndex = searchParams.get("edit");
 
 	const form = useForm<LostFormSchema>({
@@ -52,22 +53,25 @@ export default function AddLostItemPage() {
 		},
 	});
 
-	const onSubmit = async (data: LostFormSchema) => {
-		// Here you would typically send this data to your backend
-		// or store it in a global state management solution
-		console.log("Lost item form submitted:", data);
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
 
+	const onSubmit = async (data: LostFormSchema) => {
 		await createLostItem(data);
-		// For now, just navigate back to the main page
 		router.push("/lostfound");
 	};
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-foreground">
-			<Navbar></Navbar>
+			<Navbar />
 
-			{/* Main Content */}
 			<div className="flex-1 container max-w-2xl mx-auto py-8">
+				<div className="flex flex-row justify-between mb-6">
+					<h1 className="text-3xl font-bold">Add Lost Item</h1>
+				</div>
 				<div className="bg-card p-6 rounded-lg shadow-md border border-border">
 					<Form {...form}>
 						<form

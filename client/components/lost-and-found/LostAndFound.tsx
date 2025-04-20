@@ -5,8 +5,7 @@ import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { lostAndFoundWithUserType } from "@/types/prisma-types";
-import LostPage from "./LostPage";
-import FoundPage from "./FoundPage";
+import LostAndFoundComponent from "./LostAndFoundComponent";
 import { Navbar } from "../general/Navbar";
 
 export default function LostAndFound({
@@ -38,7 +37,7 @@ export default function LostAndFound({
 					>
 						<Button className="bg-purple-600 hover:bg-purple-700 text-white">
 							+ Add{" "}
-							{activeTab === "lost" ? "lost item" : "found item"}
+							{activeTab === "lost" ? "Lost Item" : "Found Item"}
 						</Button>
 					</Link>
 				</div>
@@ -54,11 +53,11 @@ export default function LostAndFound({
 					</TabsList>
 
 					<TabsContent value="lost">
-						<LostPage lostItems={lostItems} />
+						<LostAndFoundComponent items={lostItems} />
 					</TabsContent>
 
 					<TabsContent value="found">
-						<FoundPage foundItems={foundItems} />
+						<LostAndFoundComponent items={foundItems} />
 					</TabsContent>
 				</Tabs>
 			</div>

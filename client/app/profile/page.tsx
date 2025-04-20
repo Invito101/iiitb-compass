@@ -1,15 +1,18 @@
 import { auth } from "@/auth";
 import ProfilePageComponenet from "@/components/profile/ProfilePageComponenet";
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
 	const session = await auth();
 	if (!session) {
-		return <div>Unauthorized</div>;
+		redirect("/auth");
+		return;
 	}
 
 	if (!session.user) {
-		return <div>Unauthorized</div>;
+		redirect("/auth");
+		return;
 	}
 
 	const user = await prisma.user.findUnique({

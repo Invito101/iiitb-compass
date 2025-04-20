@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,13 @@ export default function DisplayFoodItem({
 	foodEntry: foodMenuEntryWithItemAndRatingType;
 }) {
 	const [hoveredRating, setHoveredRating] = useState(0);
-
+	const { data, status } = useSession();
+	const router = useRouter();
+	useEffect(() => {
+		if (status === "unauthenticated") {
+		  router.push("/auth");
+		}
+	  }, [status, router]);
 	const {
 		register,
 		handleSubmit,
@@ -48,7 +54,6 @@ export default function DisplayFoodItem({
 	});
 
 	const rating = watch("rating");
-	const router = useRouter();
 	const onSubmit = async (data: FoodItemSchema) => {
 		console.log("Submitted Review", {
 			foodMenuEntryId: foodEntry.id,

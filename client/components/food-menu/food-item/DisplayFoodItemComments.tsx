@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Star, ChevronLeft } from "lucide-react";
@@ -8,17 +8,23 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { foodMenuEntryWithItemAndRatingType } from "@/types/prisma-types";
 import { useSession } from "next-auth/react";
 import { Navbar } from "@/components/general/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function DisplayFoodItemComments({
 	foodEntry,
 }: {
 	foodEntry: foodMenuEntryWithItemAndRatingType;
 }) {
-	const { data: session } = useSession();
-	const userName = session?.user?.name || "User";
-	const userImage = session?.user?.image || "/profile.jpg";
+	const { data, status } = useSession();
+	const userName = data?.user?.name || "User";
+	const userImage = data?.user?.image || "/profile.jpg";
 	const reviews = foodEntry.FoodItemRating;
-
+	const router = useRouter();
+	useEffect(() => {
+		if (status === "unauthenticated") {
+		  router.push("/auth");
+		}
+	  }, [status, router]);
 	return (
 		<div className="min-h-screen bg-background flex flex-col">
 			<Navbar></Navbar>

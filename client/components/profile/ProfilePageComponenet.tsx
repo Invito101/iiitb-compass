@@ -30,7 +30,7 @@ import {
 	FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { updateProfile } from "@/forms/profile/action";
 import { useRouter } from "next/navigation";
@@ -43,7 +43,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { LogOut, UserIcon } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Navbar } from "../general/Navbar";
 
 export default function ProfilePageComponenet({ user }: { user: User }) {
