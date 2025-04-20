@@ -54,7 +54,7 @@ export default function AddCabSharePage() {
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">
 			{/* Top Bar */}
-			{JSON.stringify(form.watch())}
+			{/*{JSON.stringify(form.watch())}*/}
 			<div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
 				<div className="flex items-center gap-4">
 					<Image
@@ -147,11 +147,18 @@ export default function AddCabSharePage() {
 										</FormItem>
 									)}
 								/>
-
-								<div className="flex justify-center">
+								<div className="flex justify-between">
+									<Button
+										type="button"
+										variant="outline"
+										onClick={() => router.push("/cabshare")}
+										className="border border-black/10 dark:border-white/10"
+									>
+										Cancel
+									</Button>
 									<Button
 										type="submit"
-										className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
+										className="bg-purple-600 hover:bg-purple-700 text-black dark:text-white font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
 									>
 										Add CabShare
 									</Button>
