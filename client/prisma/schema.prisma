@@ -86,9 +86,10 @@ model LostAndFound {
 
 model FoodMenuItems {
     id          String  @id @default(cuid())
-    name        String
+    name        String  @unique
     description String?
 
+    // Dietary restrictions -> "veg", "non-veg", "egg", "vegan", "jain"
     dietType String[]
 
     FoodMenuEntries FoodMenuEntries[]
