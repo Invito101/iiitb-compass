@@ -39,9 +39,9 @@ All into one sleek and modern dashboard.
 
 - **`/cabshare`**: Users can view and post cab-sharing opportunities based on time and destination.
 
-- **`/lost-and-found`**: Submit details of lost or found items. Users can filter and search by date, category, or location.
+- **`/lostfound`**: Submit details of lost or found items. Users can filter and search by date, category, or location.
 
-- **`/menu`**: Shows the current week's mess menu. Users can rate meals and read aggregated ratings by others.
+- **`/foodmenu`**: Shows the current week's mess menu. Users can rate meals and read aggregated ratings by others.
 
 - **`/contact`**: Page with links to linkedin profiles of all members involved.
 
@@ -98,17 +98,62 @@ cd iiitb-compass/client
 2. Install dependencies:
 
 ```bash
-npm install
+npm install --force
 ```
 
-3. Configure environment variables:
+It is important to use --force here
 
-In the `.env` file inside the repo, configure these lines  (Follow nextAuth documentation, contact the repo owner for extra details):
+ 3.  Configure Environment Variables
+
+In the `.env` file inside the repo, make sure to properly configure the following values:
 
 ```env
 AUTH_GITHUB_ID=***
 AUTH_GITHUB_SECRET=***
 ```
+
+ Follow these guides to set up GitHub OAuth and integrate Auth.js with Prisma:
+
+-  [Auth.js Installation Guide](https://authjs.dev/getting-started/installation)  
+-  [GitHub OAuth Setup](https://authjs.dev/getting-started/authentication/oauth#github)  
+-  [Prisma Adapter Setup](https://authjs.dev/getting-started/adapters/prisma)
+
+---
+
+```env
+AUTH_SECRET=***
+```
+
+- Generate a **random string** and paste it here.  
+  You can use [this tool](https://generate-secret.vercel.app/32) or any method you like to generate one.
+
+---
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+```
+
+- Set this to the **URL where your dev server runs**, usually `http://localhost:3000` during local development.
+
+---
+
+```env
+DATABASE_URL=***
+```
+
+To get your database URL:
+
+ - Sign up at [neon.tech](https://neon.tech/docs/get-started-with-neon/signing-up)  
+ - Follow the links below to connect your Neon database, and get your :  
+    https://neon.tech/docs/get-started-with-neon/signing-up
+    https://neon.tech/docs/get-started-with-neon/connect-neon
+
+And add your database URL to the variable
+
+
+
+
+
 
 4. Generate Prisma client:
 
@@ -122,10 +167,8 @@ npx prisma generate
 npm run dev
 ```
 
-Then go to **http://localhost:3000/auth** to begin.
+Then go to **http://localhost:3000/auth** and sign up with github to begin.
 
 ---
-Go to `http://localhost:3000/auth` to begin authentication.
----
 
-Project maintained by IIITB students. Built with 💜 for campus life.
+Project built and maintained by IIITB students. Built with 💜 for campus life.
