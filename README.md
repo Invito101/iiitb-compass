@@ -29,6 +29,10 @@ All into one sleek and modern dashboard.
    - Check the daily mess menu.
    - Rate meals and view peer ratings for food quality and variety.
 
+5. **Unique Profiles for students via Github login**
+   - Each user has a unique profile and contact field
+   - Makes it easier to find contacts for cabsharing and lost&found
+
 ## Pages
 
 - **`/auth`**: Authentication page allowing users to log in via GitHub. Upon successful login, users are redirected to the dashboard.
@@ -42,6 +46,8 @@ All into one sleek and modern dashboard.
 - **`/lostfound`**: Submit details of lost or found items. Users can filter and search by date, category, or location.
 
 - **`/foodmenu`**: Shows the current week's mess menu. Users can rate meals and read aggregated ratings by others.
+
+- **`/profile`**: Users can view and update their account information.
 
 - **`/contact`**: Page with links to linkedin profiles of all members involved.
 
