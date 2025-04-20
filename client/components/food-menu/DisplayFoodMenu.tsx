@@ -1,5 +1,6 @@
 "use client";
 
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +14,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { foodMenuCycleWithEntriesWithItemAndRatingType } from "@/types/prisma-types";
 import { format, parseISO } from "date-fns";
-
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselPrevious,
+	CarouselNext,
+  } from "@/components/ui/carousel";
+  
 type DayName =
 	| "Sunday"
 	| "Monday"
@@ -218,7 +226,7 @@ export default function DisplayFoodMenu({
 						>
 							<ChevronLeft />
 						</Button>
-						<h2 className="text-xl font-semibold">
+						<h2 className="text-xl font-semibold w-48 text-center">
 							{DAY_NAMES[dayIdx]}'s Menu
 						</h2>
 						<Button
