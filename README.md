@@ -33,13 +33,19 @@ All into one sleek and modern dashboard.
    - Each user has a unique profile and contact field
    - Makes it easier to find contacts for cabsharing and lost&found
 
+6. **Dark/Light mode switching capabilities**
+   - Can switch between dark and light mode
+   - A system default option also exists
+
+
+
 ## Pages
 
 - **`/auth`**: Authentication page allowing users to log in via GitHub. Upon successful login, users are redirected to the dashboard.
 
-- **`/dashboard`**: The central hub where users can access all features: CabShare, Calendar, Lost & Found, and Menu and Contact Us.
+- **`/dashboard`**: The central hub where users can access all features: CabShare, Calendar, Lost & Found, Menu, Profile and Contact Us.
 
-- **`/calendar`**: Displays academic and campus events. Pulled from a pre-fed calendar source or admin-created entries.
+- **`/calendar`**: Displays academic and campus events. Pulled from a pre-fed calendar source (Unipage calendar 2025), admins can fill extra events.
 
 - **`/cabshare`**: Users can view and post cab-sharing opportunities based on time and destination.
 
