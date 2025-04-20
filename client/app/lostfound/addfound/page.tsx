@@ -40,7 +40,6 @@ import { Navbar } from "@/components/general/Navbar";
 export default function AddFoundItemPage() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const editIndex = searchParams.get("edit");
 
 	const form = useForm<FoundFormSchema>({
 		resolver: zodResolver(foundFormSchema),
@@ -54,12 +53,9 @@ export default function AddFoundItemPage() {
 	});
 
 	const onSubmit = async (data: FoundFormSchema) => {
-		// Here you would typically send this data to your backend
-		// or store it in a global state management solution
 		console.log("Found item form submitted:", data);
 
 		await createFoundItem(data);
-		// For now, just navigate back to the main page
 		router.push("/lostfound");
 	};
 
@@ -67,8 +63,10 @@ export default function AddFoundItemPage() {
 		<div className="min-h-screen flex flex-col bg-background text-foreground">
 			<Navbar></Navbar>
 
-			{/* Main Content */}
 			<div className="flex-1 container max-w-2xl mx-auto py-8">
+				<div className="flex flex-row justify-between mb-6">
+					<h1 className="text-3xl font-bold">Add Found Item</h1>
+				</div>
 				<div className="bg-card p-6 rounded-lg shadow-md border border-border">
 					<Form {...form}>
 						<form
@@ -203,7 +201,7 @@ export default function AddFoundItemPage() {
 								</Link>
 								<Button
 									type="submit"
-									className="bg-gradient-to-br from-purple-600 to-fuchsia-600 text-white"
+									className="bg-purple-600 hover:bg-purple-700 text-white"
 								>
 									Submit
 								</Button>

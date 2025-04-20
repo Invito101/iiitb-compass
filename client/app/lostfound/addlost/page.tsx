@@ -53,12 +53,7 @@ export default function AddLostItemPage() {
 	});
 
 	const onSubmit = async (data: LostFormSchema) => {
-		// Here you would typically send this data to your backend
-		// or store it in a global state management solution
-		console.log("Lost item form submitted:", data);
-
 		await createLostItem(data);
-		// For now, just navigate back to the main page
 		router.push("/lostfound");
 	};
 
@@ -66,8 +61,10 @@ export default function AddLostItemPage() {
 		<div className="min-h-screen flex flex-col bg-background text-foreground">
 			<Navbar></Navbar>
 
-			{/* Main Content */}
 			<div className="flex-1 container max-w-2xl mx-auto py-8">
+				<div className="flex flex-row justify-between mb-6">
+					<h1 className="text-3xl font-bold">Add Lost Item</h1>
+				</div>
 				<div className="bg-card p-6 rounded-lg shadow-md border border-border">
 					<Form {...form}>
 						<form
