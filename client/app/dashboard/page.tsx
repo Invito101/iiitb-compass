@@ -134,7 +134,7 @@ export default function DashboardLayout({
 					} else if (i === 2) {
 						href = "/lostfound";
 						label = "Lost & Found";
-						imageSrc = "/mindcraft.jpeg";
+						imageSrc = "/lostfound.jpg";
 					} else if (i === 3) {
 						href = "/foodmenu";
 						label = "Food Menu";
