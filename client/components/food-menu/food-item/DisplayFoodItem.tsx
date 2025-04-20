@@ -156,7 +156,7 @@ export default function DisplayFoodItem({
       </div>
 
       {/* Content Section */}
-      <div className="flex flex-col justify-center items-center py-8 flex-grow px-8 -mt-15">
+      <div className="flex flex-col justify-center items-center py-8 flex-grow px-8">
         <Card className="w-full max-w-xl p-6 rounded-2xl shadow-lg">
           <CardContent>
             <div className="text-center mb-6">
