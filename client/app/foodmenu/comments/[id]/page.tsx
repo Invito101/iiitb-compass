@@ -1,3 +1,4 @@
+import DisplayFoodItemComments from "@/components/food-menu/food-item/DisplayFoodItemComments";
 import prisma from "@/lib/prisma";
 
 export default async function FoodCommentsPage({
@@ -24,5 +25,5 @@ export default async function FoodCommentsPage({
 		return <div>Food item not found</div>;
 	}
 
-	return <div>a</div>;
+	return <DisplayFoodItemComments foodEntry={foodEntry}></DisplayFoodItemComments>;	
 }
