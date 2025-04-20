@@ -111,7 +111,6 @@ export default function DisplayFoodMenu({
 			<Navbar></Navbar>
 
 			<div className="max-w-4xl mx-auto p-6 space-y-4">
-				{/* Day selector */}
 				<div className="flex flex-col items-center space-y-2">
 					<div className="flex items-center space-x-4">
 						<Button
@@ -138,7 +137,6 @@ export default function DisplayFoodMenu({
 				</div>
 				<Separator />
 
-				{/* Meals */}
 				{Object.entries(meals).map(([meal, entries]) => (
 					<div key={meal} className="mb-8">
 						<h3 className="text-2xl font-semibold mb-4">{meal}</h3>

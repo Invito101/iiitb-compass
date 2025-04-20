@@ -69,7 +69,6 @@ export default function DisplayFoodItem({
 		<div className="min-h-screen flex flex-col bg-background">
 			<Navbar></Navbar>
 
-      {/* Content Section */}
       <div className="flex flex-col justify-center items-center py-8 flex-grow px-8">
         <Card className="w-full max-w-xl p-6 rounded-2xl shadow-lg">
           <CardContent>
@@ -85,7 +84,6 @@ export default function DisplayFoodItem({
 							onSubmit={handleSubmit(onSubmit)}
 							className="space-y-6"
 						>
-							{/* Star Rating */}
 							<div className="flex justify-center items-center space-x-2">
 								{[1, 2, 3, 4, 5].map((star) => (
 									<Star
@@ -116,7 +114,6 @@ export default function DisplayFoodItem({
 								</p>
 							)}
 
-							{/* Comment */}
 							<div>
 								<Label htmlFor="comment">
 									Comment{" "}
@@ -132,7 +129,6 @@ export default function DisplayFoodItem({
 								/>
 							</div>
 
-							{/* Buttons */}
 							<div className="flex justify-between items-center pt-2">
 								<Link href="/foodmenu">
 									<Button variant="outline" type="button">

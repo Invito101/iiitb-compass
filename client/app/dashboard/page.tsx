@@ -66,10 +66,8 @@ export default function DashboardLayout() {
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-foreground">
-			{/* Navigation Bar */}
 			<Navbar />
 
-			{/* Button Grid */}
 			<div className="flex-1 p-8 flex justify-center">
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-full max-w-4xl">
 					{buttons.map((button, i) => (
@@ -97,6 +95,8 @@ export default function DashboardLayout() {
 					))}
 				</div>
 			</div>
+
+			{children}
 		</div>
 	);
 }

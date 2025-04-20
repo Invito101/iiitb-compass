@@ -25,7 +25,6 @@ export default function Login() {
 		<div className="h-screen flex flex-col overflow-hidden">
 			<Navbar></Navbar>
 
-			{/* Fullscreen Calendar */}
 			<div className="flex-1 min-h-0">
 				<iframe
 					src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FKolkata&showPrint=0&showTz=0&src=OTI3MzQwMzhjNmNjZWQwMDVhMmVkYTlhM2M2MzUwYTU0OGIwNmIxOTY2ZjFlNDQ5YzU3NTkwMjEyNTNjMTY3MEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23A79B8E"

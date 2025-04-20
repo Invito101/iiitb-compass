@@ -5,10 +5,10 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       'avatars.githubusercontent.com',
-      'images.unsplash.com', // Required for Unsplash images in TeamPage.tsx
+      'images.unsplash.com', 
     ],
   },
-  reactStrictMode: true, // Enables React Strict Mode for better error reporting
+  reactStrictMode: true, 
 };
 
 export default nextConfig;

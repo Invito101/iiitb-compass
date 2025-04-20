@@ -38,7 +38,6 @@ export function Navbar() {
 		{ href: "/foodmenu", label: "Food Menu" },
 	];
 
-	// Set initial underline position on mount and when pathname changes
 	useEffect(() => {
 		if (navContainerRef.current) {
 			const activeLink = navContainerRef.current.querySelector(
@@ -73,7 +72,6 @@ export function Navbar() {
 					ref={navContainerRef}
 					className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
 					onMouseEnter={(e) => {
-						// Find the active link
 						const activeLink = e.currentTarget.querySelector(
 							`a[href="${pathname}"]`
 						) as HTMLElement;

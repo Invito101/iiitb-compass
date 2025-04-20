@@ -119,15 +119,13 @@
 	}
 }
 
-/* chrome,safari,opera */
 .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
   
-  /* IE,edge,firefox */
   .scrollbar-none {
-    -ms-overflow-style: none;  /* IE, edge*/
-    scrollbar-width: none;     /*firefox */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;    
   }
   
   
