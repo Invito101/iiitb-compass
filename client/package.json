@@ -18,6 +18,7 @@
 		"@radix-ui/react-label": "^2.1.4",
 		"@radix-ui/react-popover": "^1.1.10",
 		"@radix-ui/react-scroll-area": "^1.2.5",
+		"@radix-ui/react-separator": "^1.1.4",
 		"@radix-ui/react-slot": "^1.2.0",
 		"@radix-ui/react-switch": "^1.2.2",
 		"class-variance-authority": "^0.7.1",
@@ -30,7 +31,7 @@
 		"next-themes": "^0.4.6",
 		"postcss": "^8.5.3",
 		"react": "^19.1.0",
-		"react-day-picker": "^9.6.7",
+		"react-day-picker": "^8.10.1",
 		"react-dom": "^19.1.0",
 		"react-hook-form": "^7.55.0",
 		"react-icons": "^5.5.0",
@@ -39,15 +40,15 @@
 		"zod": "^3.24.3"
 	},
 	"devDependencies": {
-		"@tailwindcss/oxide-linux-x64-gnu": "^4.1.4",
 		"@tailwindcss/postcss": "^4.1.4",
 		"@types/next-auth": "^3.15.0",
 		"@types/node": "^22",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
-		"lightningcss-linux-x64-gnu": "^1.29.3",
 		"prisma": "^6.6.0",
 		"tailwindcss": "^4.1.4",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.19.3",
 		"typescript": "5.8.3"
 	},
 	"prettier": {

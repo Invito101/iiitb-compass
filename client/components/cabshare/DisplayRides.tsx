@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -13,10 +12,13 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Prisma } from "@prisma/client";
+import { DatePicker } from "@/components/ui/date-picker";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useSession } from "next-auth/react";
 
 type FormValues = {
 	date: string;
@@ -28,14 +30,19 @@ export default function DisplayRides({
 	cabShares: Prisma.CabShareGetPayload<{ include: { user: true } }>[];
 }) {
 	const router = useRouter();
+	const { data } = useSession();
+	const userName = data?.user?.name || "User";
+	const userImage = data?.user?.image || "/profile.png";
+
+	const today = new Date().toISOString().split("T")[0];
+
 	const form = useForm<FormValues>({
-		defaultValues: { date: "" },
+		defaultValues: { date: today },
 	});
 	const selectedDate = form.watch("date");
 
 	const [loading, setLoading] = useState(true);
 
-	// fake 500ms spinner
 	useEffect(() => {
 		const timer = setTimeout(() => setLoading(false), 500);
 		return () => clearTimeout(timer);
@@ -73,56 +80,156 @@ export default function DisplayRides({
 
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">
-			{/* Top Bar */}
-			<div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
-				<div className="flex items-center gap-4">
+			{/* Navigation Bar */}
+			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8">
+				<Link href={"/dashboard"} className="flex items-center gap-4">
 					<Image
 						src="/spinner.png"
 						alt="Logo"
 						width={40}
 						height={40}
 					/>
+				</Link>
+				<div className="relative">
+					<div
+						className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
+						onMouseEnter={(e) => {
+							const cabShareLink = e.currentTarget.querySelector(
+								'a[href="/cabshare"]'
+							) as HTMLElement;
+							const underline = e.currentTarget.querySelector(
+								".absolute"
+							) as HTMLElement;
+							if (cabShareLink && underline) {
+								underline.style.setProperty(
+									"--underline-width",
+									`${cabShareLink.offsetWidth}px`
+								);
+								underline.style.setProperty(
+									"--underline-left",
+									`${cabShareLink.offsetLeft}px`
+								);
+							}
+						}}
+					>
+						<div
+							className="absolute bottom-0 h-0.5 bg-purple-600 transition-all duration-300"
+							style={{
+								width: "var(--underline-width, 0)",
+								left: "var(--underline-left, 0)",
+							}}
+						/>
+						{[
+							{
+								href: "/dashboard",
+								label: "Dashboard",
+							},
+							{ href: "/calendar", label: "Calendar" },
+							{
+								href: "/cabshare",
+								label: "Cab Share",
+								className: "text-purple-600 font-semibold",
+							},
+							{ href: "/lostfound", label: "L&F" },
+							{ href: "/foodmenu", label: "Food Menu" },
+						].map(({ href, label, className = "" }) => (
+							<Link
+								key={href}
+								href={href}
+								className={`group relative ${className} text-muted-foreground hover:text-purple-600 transition-colors duration-300`}
+								onMouseEnter={(e) => {
+									const target = e.currentTarget;
+									const underline =
+										target.parentElement?.querySelector(
+											".absolute"
+										) as HTMLElement;
+									if (underline) {
+										underline.style.setProperty(
+											"--underline-width",
+											`${target.offsetWidth}px`
+										);
+										underline.style.setProperty(
+											"--underline-left",
+											`${target.offsetLeft}px`
+										);
+									}
+								}}
+								onMouseLeave={(e) => {
+									const underline =
+										e.currentTarget.parentElement?.querySelector(
+											".absolute"
+										) as HTMLElement;
+									if (underline) {
+										underline.style.setProperty(
+											"--underline-width",
+											"0"
+										);
+									}
+								}}
+							>
+								<span>{label}</span>
+							</Link>
+						))}
+					</div>
 				</div>
+
 				<div className="flex items-center gap-4">
 					<ModeToggle />
-					<Image
-						src="/profile.jpg"
-						alt="Account"
-						width={48}
-						height={48}
-						className="rounded-full object-cover cursor-pointer border-2 border-black/10 dark:border-white"
-					/>
+					<Link href="/profile" className="h-8 w-8">
+						<Avatar>
+							<AvatarImage src={userImage} />
+							<AvatarFallback>{userName}</AvatarFallback>
+						</Avatar>
+					</Link>
 				</div>
 			</div>
 
-			{/* Content */}
-			<div className="p-8 flex-1">
-				<h1 className="text-3xl font-bold mb-6 text-center">
-					Available CabShares
-				</h1>
+			<div className="p-8 flex-1 max-w-7xl mx-auto w-full">
+				<div className="flex items-center justify-between mb-6">
+					<h1 className="text-3xl font-bold">Available Cab Shares</h1>
+					<Button
+						onClick={() => router.push("/cabshare/create")}
+						className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10 text-white"
+					>
+						Add Cab Share
+					</Button>
+				</div>
 
-				<Card className="mb-8 max-w-md mx-auto border border-black/10 dark:border-white/20 bg-transparent shadow-lg">
+				<Card className="mb-12 border border-black/10 dark:border-white/20 bg-transparent shadow-lg">
 					<CardHeader>
-						<CardTitle>Select Date</CardTitle>
+						<CardTitle>
+							Cab Shares on {formatDate(selectedDate)}
+						</CardTitle>
 					</CardHeader>
 					<CardContent>
+						{/* Date Selector */}
 						<Form {...form}>
-							<form
-								onSubmit={form.handleSubmit((values) => {
-									// TODO: handle submit
-								})}
-								className="flex flex-col space-y-4"
-							>
+							<form className="mb-6">
 								<FormField
 									control={form.control}
 									name="date"
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Input
-													type="date"
-													{...field}
-													className="bg-white dark:bg-black/20 border border-black/10 dark:border-white/10"
+												{/* Use Controller to wrap DatePicker */}
+												<Controller
+													name="date"
+													control={form.control}
+													render={({ field }) => (
+														<DatePicker
+															value={
+																field.value ||
+																""
+															} // Fallback to empty string
+															onChange={(
+																date: string
+															) =>
+																field.onChange(
+																	date
+																)
+															} // Ensure onChange works with string
+														/>
+													)}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -131,54 +238,44 @@ export default function DisplayRides({
 								/>
 							</form>
 						</Form>
+
+						{filtered.length === 0 ? (
+							<p>No cabshares found.</p>
+						) : (
+							<div
+								className="grid gap-6 justify-center"
+								style={{
+									gridTemplateColumns:
+										"repeat(auto-fit, minmax(360px, 1fr))",
+								}}
+							>
+								{filtered.map((cab) => (
+									<div
+										key={cab.id}
+										className="w-full h-36 p-6 border border-black/10 dark:border-white/20 rounded-xl bg-white dark:bg-black/30 shadow-md flex flex-col justify-between"
+									>
+										<div>
+											<strong>Route:</strong> {cab.origin}{" "}
+											to {cab.destination}
+										</div>
+										<div>
+											<strong>Time:</strong>{" "}
+											{cab.date.toLocaleTimeString([], {
+												hour: "2-digit",
+												minute: "2-digit",
+												hour12: true,
+											})}
+										</div>
+										<div>
+											<strong>Contact:</strong>{" "}
+											{cab.user.phone || "N/A"}
+										</div>
+									</div>
+								))}
+							</div>
+						)}
 					</CardContent>
 				</Card>
-
-				{selectedDate && (
-					<Card className="mb-12 max-w-xl mx-auto border border-black/10 dark:border-white/20 bg-transparent shadow-lg">
-						<CardHeader>
-							<CardTitle>
-								CabShares on {formatDate(selectedDate)}
-							</CardTitle>
-						</CardHeader>
-						<CardContent>
-							{filtered.length === 0 ? (
-								<p>No cabshares found.</p>
-							) : (
-								<ul className="space-y-4">
-									{filtered.map((cab) => (
-										<li
-											key={cab.id}
-											className="p-4 border border-black/10 dark:border-white/20 rounded bg-white dark:bg-black/30"
-										>
-											<div>
-												<strong>Time:</strong>{" "}
-												{cab.date.toLocaleTimeString([], {})}
-											</div>
-											<div>
-												<strong>Route:</strong>{" "}
-												{cab.origin} to {cab.destination}
-											</div>
-											<div>
-												<strong>Contact:</strong>{" "}
-												{cab.user.phone ? cab.user.phone : "N/A"}
-											</div>
-										</li>
-									))}
-								</ul>
-							)}
-						</CardContent>
-					</Card>
-				)}
-
-				<div className="flex justify-center">
-					<Button
-						onClick={() => router.push("/cabshare/create")}
-						className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
-					>
-						Add CabShare
-					</Button>
-				</div>
 			</div>
 		</div>
 	);

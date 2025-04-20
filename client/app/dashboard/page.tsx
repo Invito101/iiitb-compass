@@ -16,6 +16,7 @@ export default function DashboardLayout({
 	const userImage = user?.data?.user?.image || "/profile.jpg";
 	return (
 		<div className="min-h-screen flex flex-col">
+			{/* Navigation Bar */}
 			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8">
 				<Link href={"/dashboard"} className="flex items-center gap-4">
 					<Image
@@ -133,7 +134,7 @@ export default function DashboardLayout({
 					} else if (i === 2) {
 						href = "/lostfound";
 						label = "Lost & Found";
-						imageSrc = "/mindcraft.jpeg";
+						imageSrc = "/lostfound.jpg";
 					} else if (i === 3) {
 						href = "/foodmenu";
 						label = "Food Menu";
