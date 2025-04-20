@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 export default async function FoodCommentsPage({
 	params,
 }: {
-	params: { id: string };
+	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
 	const foodEntry = await prisma.foodMenuEntries.findUnique({
@@ -25,5 +25,9 @@ export default async function FoodCommentsPage({
 		return <div>Food item not found</div>;
 	}
 
-	return <DisplayFoodItemComments foodEntry={foodEntry}></DisplayFoodItemComments>;	
+	return (
+		<DisplayFoodItemComments
+			foodEntry={foodEntry}
+		></DisplayFoodItemComments>
+	);
 }

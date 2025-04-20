@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,8 +46,6 @@ export default function AddLostItemPage() {
 			router.push("/auth");
 		}
 	}, [status, router]);
-	const searchParams = useSearchParams();
-	const editIndex = searchParams.get("edit");
 
 	const form = useForm<LostFormSchema>({
 		resolver: zodResolver(lostFormSchema),
