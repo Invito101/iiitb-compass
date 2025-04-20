@@ -23,19 +23,19 @@ export default function Login() {
     redirect("./dashboard");
   }
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">
-        <Image
-          src="/spinner.png"
-          alt="Loading"
-          width={128}
-          height={128}
-          className="animate-spin border-4 border-white rounded-full shadow-xl"
-        />
-      </div>
-    );
-  }
+	if (loading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center bg-black">
+				<Image
+					src="/spinner.png"
+					alt="Loading"
+					width={128}
+					height={128}
+					className="animate-spin border-4 border-black/10 dark:border-white rounded-full shadow-xl"
+				/>
+			</div>
+		);
+	}
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-800 via-purple-800 to-fuchsia-800">

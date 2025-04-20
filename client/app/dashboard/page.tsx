@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
@@ -15,6 +16,28 @@ export default function DashboardLayout({
 	const user = useSession();
 	const userName = user?.data?.user?.name || "User";
 	const userImage = user?.data?.user?.image || "/profile.jpg";
+	
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const timer = setTimeout(() => setLoading(false), 500);
+		return () => clearTimeout(timer);
+	}, []);
+
+	if (loading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center bg-black">
+				<Image
+					src="/spinner.png"
+					alt="Loading"
+					width={128}
+					height={128}
+					className="animate-spin border-4 border-black/10 dark:border-white rounded-full shadow-xl"
+				/>
+			</div>
+		);
+	}
+	
 	return (
 		<div className="min-h-screen flex flex-col">
 			{/* Navigation Bar */}
@@ -69,6 +92,20 @@ export default function DashboardLayout({
 			</div>
 
 			{children}
+			
+			{/* Footer with Copyright */}
+			<footer className="mt-auto py-6 px-8 border-t border-gray-200 dark:border-gray-800">
+				<div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+					<div className="text-sm text-gray-500 dark:text-gray-400">
+						&copy; {new Date().getFullYear()} IIITB Compass. All rights reserved.
+					</div>
+					<div className="flex space-x-4 mt-4 md:mt-0">
+						<Link href="/contact" className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+							Contact Us
+						</Link>
+					</div>
+				</div>
+			</footer>
 		</div>
 	);
 }

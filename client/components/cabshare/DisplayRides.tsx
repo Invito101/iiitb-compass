@@ -42,13 +42,6 @@ export default function DisplayRides({
 	});
 	const selectedDate = form.watch("date");
 
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		const timer = setTimeout(() => setLoading(false), 500);
-		return () => clearTimeout(timer);
-	}, []);
-
 	const startOfSelectedDate = new Date(selectedDate);
 	startOfSelectedDate.setHours(0, 0, 0, 0);
 
@@ -64,20 +57,6 @@ export default function DisplayRides({
 		const [y, m, day] = d.split("-");
 		return `${day}/${m}/${y}`;
 	};
-
-	if (loading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center bg-black">
-				<Image
-					src="/spinner.png"
-					alt="Loading"
-					width={128}
-					height={128}
-					className="animate-spin border-4 border-black/10 dark:border-white rounded-full shadow-xl"
-				/>
-			</div>
-		);
-	}
 
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">
