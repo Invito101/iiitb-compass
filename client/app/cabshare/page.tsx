@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import DisplayRides from "@/components/cabshare/DisplayRides";
 import prisma from "@/lib/prisma";
 

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import LostAndFound from "@/components/lost-and-found/LostAndFound";
 import prisma from "@/lib/prisma";
 

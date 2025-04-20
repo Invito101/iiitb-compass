@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import DisplayFoodItemComments from "@/components/food-menu/food-item/DisplayFoodItemComments";
 import prisma from "@/lib/prisma";
 

@@ -55,7 +55,7 @@ export default function LostAndFoundComponent({
 		<div className="w-full px-2 py-6">
 			{items.length === 0 ? (
 				<p className="text-muted-foreground text-lg">
-					No lost items yet. 🥲
+					No lost items yet.
 				</p>
 			) : (
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 mx-0">

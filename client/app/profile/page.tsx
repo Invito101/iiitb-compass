@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { auth } from "@/auth";
 import ProfilePageComponenet from "@/components/profile/ProfilePageComponenet";
 import prisma from "@/lib/prisma";
