@@ -17,3 +17,11 @@ export type foodMenuCycleWithEntriesWithItemAndRatingType =
 			};
 		};
 	}>;
+
+export type foodMenuEntryWithItemAndRatingType =
+	Prisma.FoodMenuEntriesGetPayload<{
+		include: {
+			foodItem: true;
+			FoodItemRating: { include: { user: true } };
+		};
+	}>;

@@ -284,7 +284,7 @@ export default function DisplayFoodMenu({
 														asChild
 													>
 														<Link
-															href={`/rate/${entry.id}`}
+															href={`/foodmenu/${entry.id}`}
 														>
 															Rate
 														</Link>
@@ -295,7 +295,7 @@ export default function DisplayFoodMenu({
 														size="icon"
 													>
 														<Link
-															href={`/comments/${entry.id}`}
+															href={`/foodmenu/comments/${entry.id}`}
 														>
 															<MessageSquare />
 														</Link>
