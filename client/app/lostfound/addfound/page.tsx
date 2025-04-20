@@ -80,13 +80,6 @@ export default function AddFoundItemPage() {
 
       {/* Main Content */}
       <div className="flex-1 container max-w-2xl mx-auto py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Report Found Item</h1>
-          <Link href="/">
-            <Button variant="outline">Back to List</Button>
-          </Link>
-        </div>
-
         <div className="bg-card p-6 rounded-lg shadow-md border border-border">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -190,7 +183,7 @@ export default function AddFoundItemPage() {
               />
 
               <div className="flex justify-between pt-4">
-                <Link href="/">
+                <Link href="/lostfound">
                   <Button variant="outline" type="button">Cancel</Button>
                 </Link>
                 <Button 
