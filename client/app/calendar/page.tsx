@@ -8,10 +8,16 @@ import { ModeToggle } from "@/components/mode-toggle";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Navbar } from "@/components/general/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
 	const { data, status } = useSession();
-
+	const router = useRouter();
+	useEffect(() => {
+		if (status === "unauthenticated") {
+		  router.push("/auth");
+		}
+	  }, [status, router]);
 	const userName = data?.user?.name || "User";
 	const userImage = data?.user?.image || "/profile.png";
 

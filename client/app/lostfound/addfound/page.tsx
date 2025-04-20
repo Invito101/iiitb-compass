@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { ModeToggle } from "@/components/mode-toggle";
-
 import {
 	foundFormSchema,
 	FoundFormSchema,
@@ -40,6 +40,8 @@ import { Navbar } from "@/components/general/Navbar";
 export default function AddFoundItemPage() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { data, status } = useSession();
+	const editIndex = searchParams.get("edit");
 
 	const form = useForm<FoundFormSchema>({
 		resolver: zodResolver(foundFormSchema),
@@ -52,16 +54,25 @@ export default function AddFoundItemPage() {
 		},
 	});
 
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
+
 	const onSubmit = async (data: FoundFormSchema) => {
+		// Here you would typically send this data to your backend
+		// or store it in a global state management solution
 		console.log("Found item form submitted:", data);
 
 		await createFoundItem(data);
+		// For now, just navigate back to the main page
 		router.push("/lostfound");
 	};
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-foreground">
-			<Navbar></Navbar>
+			<Navbar />
 
 			<div className="flex-1 container max-w-2xl mx-auto py-8">
 				<div className="flex flex-row justify-between mb-6">

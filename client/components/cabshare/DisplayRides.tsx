@@ -31,7 +31,15 @@ export default function DisplayRides({
 	cabShares: Prisma.CabShareGetPayload<{ include: { user: true } }>[];
 }) {
 	const router = useRouter();
-	const { data } = useSession();
+	const { data, status } = useSession();
+
+
+	useEffect(() => {
+		if (status === "unauthenticated") {
+		  router.push("/auth");
+		}
+	  }, [status, router]);
+	  
 	const userName = data?.user?.name || "User";
 	const userImage = data?.user?.image || "/profile.png";
 
@@ -44,10 +52,7 @@ export default function DisplayRides({
 
 	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		const timer = setTimeout(() => setLoading(false), 500);
-		return () => clearTimeout(timer);
-	}, []);
+
 
 	const startOfSelectedDate = new Date(selectedDate);
 	startOfSelectedDate.setHours(0, 0, 0, 0);
@@ -65,19 +70,6 @@ export default function DisplayRides({
 		return `${day}/${m}/${y}`;
 	};
 
-	if (loading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center bg-black">
-				<Image
-					src="/spinner.png"
-					alt="Loading"
-					width={128}
-					height={128}
-					className="animate-spin border-4 border-black/10 dark:border-white rounded-full shadow-xl"
-				/>
-			</div>
-		);
-	}
 
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">

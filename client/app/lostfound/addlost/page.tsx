@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,6 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { ModeToggle } from "@/components/mode-toggle";
-
 import {
 	lostFormSchema,
 	LostFormSchema,
@@ -40,6 +40,7 @@ import { Navbar } from "@/components/general/Navbar";
 export default function AddLostItemPage() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const { data, status } = useSession();
 	const editIndex = searchParams.get("edit");
 
 	const form = useForm<LostFormSchema>({
@@ -52,6 +53,12 @@ export default function AddLostItemPage() {
 		},
 	});
 
+	useEffect(() => {
+		if (status === "unauthenticated") {
+			router.push("/auth");
+		}
+	}, [status, router]);
+
 	const onSubmit = async (data: LostFormSchema) => {
 		await createLostItem(data);
 		router.push("/lostfound");
@@ -59,7 +66,7 @@ export default function AddLostItemPage() {
 
 	return (
 		<div className="min-h-screen flex flex-col bg-background text-foreground">
-			<Navbar></Navbar>
+			<Navbar />
 
 			<div className="flex-1 container max-w-2xl mx-auto py-8">
 				<div className="flex flex-row justify-between mb-6">
