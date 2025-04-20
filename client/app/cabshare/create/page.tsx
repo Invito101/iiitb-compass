@@ -39,7 +39,6 @@ export default function AddCabSharePage() {
 			origin: "",
 			destination: "",
 			date: new Date(),
-			// userId: "",
 		},
 	});
 	useEffect(() => {
@@ -59,7 +58,6 @@ export default function AddCabSharePage() {
 		<div className="min-h-screen flex flex-col overflow-auto">
 			<Navbar></Navbar>
 
-			{/* Content */}
 			<div className="p-8 flex-1">
 				<h1 className="text-3xl font-bold mb-6 text-center">
 					Add Cab Share
@@ -72,7 +70,6 @@ export default function AddCabSharePage() {
 								onSubmit={form.handleSubmit(onSubmit)}
 								className="space-y-4 flex flex-col"
 							>
-								{/* Origin */}
 								<FormField
 									control={form.control}
 									name="origin"
@@ -91,7 +88,6 @@ export default function AddCabSharePage() {
 									)}
 								/>
 
-								{/* Destination */}
 								<FormField
 									control={form.control}
 									name="destination"
@@ -110,7 +106,6 @@ export default function AddCabSharePage() {
 									)}
 								/>
 
-								{/* Date */}
 								<FormField
 									control={form.control}
 									name="date"

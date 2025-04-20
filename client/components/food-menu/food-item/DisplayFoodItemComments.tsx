@@ -29,9 +29,7 @@ export default function DisplayFoodItemComments({
 		<div className="min-h-screen bg-background flex flex-col">
 			<Navbar></Navbar>
 
-			{/* Content */}
 			<div className="mx-auto p-6 space-y-6 flex-1 relative w-full">
-				{/* Header with Back - Now consistently styled regardless of review presence */}
 				<div className="mb-6 flex items-center justify-between">
 					<div className="w-20">
 						<Link href="/foodmenu" className="flex items-center">
@@ -42,10 +40,9 @@ export default function DisplayFoodItemComments({
 					<h1 className="text-2xl font-semibold text-center flex-1">
 						Reviews
 					</h1>
-					<div className="w-20" /> {/* Spacer for alignment */}
+					<div className="w-20" /> 
 				</div>
 
-				{/* Reviews List */}
 				{!reviews || reviews.length === 0 ? (
 					<div className="flex items-center justify-center h-64 p-6">
 						<p className="text-gray-500 text-lg">No reviews yet.</p>

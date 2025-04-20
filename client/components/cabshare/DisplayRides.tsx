@@ -89,7 +89,6 @@ export default function DisplayRides({
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						{/* Date Selector */}
 						<Form {...form}>
 							<form className="mb-6">
 								<FormField
@@ -98,7 +97,6 @@ export default function DisplayRides({
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												{/* Use Controller to wrap DatePicker */}
 												<Controller
 													name="date"
 													control={form.control}
@@ -107,14 +105,14 @@ export default function DisplayRides({
 															value={
 																field.value ||
 																""
-															} // Fallback to empty string
+															} 
 															onChange={(
 																date: string
 															) =>
 																field.onChange(
 																	date
 																)
-															} // Ensure onChange works with string
+															} 
 														/>
 													)}
 												/>
