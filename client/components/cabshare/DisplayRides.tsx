@@ -152,16 +152,16 @@ export default function DisplayRides({
                     className="w-full h-36 p-6 border border-black/10 dark:border-white/20 rounded-xl bg-white dark:bg-black/30 shadow-md flex flex-col justify-between"
                   >
                     <div>
+                      <strong>Route:</strong>{" "}
+                      {cab.origin} to {cab.destination}
+                    </div>
+                    <div>
                       <strong>Time:</strong>{" "}
                       {cab.date.toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
                         hour12: true,
                       })}
-                    </div>
-                    <div>
-                      <strong>Route:</strong>{" "}
-                      {cab.origin} to {cab.destination}
                     </div>
                     <div>
                       <strong>Contact:</strong>{" "}
