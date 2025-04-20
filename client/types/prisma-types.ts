@@ -8,7 +8,12 @@ export type foodMenuCycleWithEntriesWithItemAndRatingType =
 	Prisma.FoodMenuCycleGetPayload<{
 		include: {
 			FoodMenuEntries: {
-				include: { foodItem: true; FoodItemRating: true };
+				include: {
+					foodItem: true;
+					FoodItemRating: {
+						include: { user: true };
+					};
+				};
 			};
 		};
 	}>;

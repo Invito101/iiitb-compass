@@ -14,8 +14,8 @@ export async function getFoodMenuByDate(date: Date) {
 		include: {
 			FoodMenuEntries: {
 				include: {
-					foodItem: {},
-					FoodItemRating: {},
+					foodItem: true,
+					FoodItemRating: true,
 				},
 			},
 		},

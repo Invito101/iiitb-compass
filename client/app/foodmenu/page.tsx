@@ -15,7 +15,9 @@ export default async function FoodMenuPage() {
 			FoodMenuEntries: {
 				include: {
 					foodItem: true,
-					FoodItemRating: true,
+					FoodItemRating: {
+						include: { user: true },
+					},
 				},
 			},
 		},

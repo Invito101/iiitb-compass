@@ -24,9 +24,13 @@ import {
 } from "@/forms/cab-sharing/cabSharingSchema";
 import { useSession } from "next-auth/react";
 import { createCabSharing } from "@/forms/cab-sharing/action";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function AddCabSharePage() {
 	const { data, status } = useSession();
+	const userName = data?.user?.name || "User";
+	const userImage = data?.user?.image || "/profile.png";
 	const router = useRouter();
 	const form = useForm<CabSharingFormSchema>({
 		resolver: zodResolver(cabSharingFormSchema),
@@ -53,33 +57,114 @@ export default function AddCabSharePage() {
 
 	return (
 		<div className="min-h-screen flex flex-col overflow-auto">
-			{/* Top Bar */}
-			{/*{JSON.stringify(form.watch())}*/}
-			<div className="w-full h-28 flex items-center justify-between px-8 shadow-md">
-				<div className="flex items-center gap-4">
+			{/* Navigation Bar */}
+			<div className="h-28 flex items-center justify-between shadow-md border border-b px-8">
+				<Link href={"/dashboard"} className="flex items-center gap-4">
 					<Image
 						src="/spinner.png"
 						alt="Logo"
 						width={40}
 						height={40}
 					/>
+				</Link>
+				<div className="relative">
+					<div
+						className="gap-x-4 items-center justify-center hidden md:flex md:flex-row relative"
+						onMouseEnter={(e) => {
+							const cabShareLink = e.currentTarget.querySelector(
+								'a[href="/cabshare"]'
+							) as HTMLElement;
+							const underline = e.currentTarget.querySelector(
+								".absolute"
+							) as HTMLElement;
+							if (cabShareLink && underline) {
+								underline.style.setProperty(
+									"--underline-width",
+									`${cabShareLink.offsetWidth}px`
+								);
+								underline.style.setProperty(
+									"--underline-left",
+									`${cabShareLink.offsetLeft}px`
+								);
+							}
+						}}
+					>
+						<div
+							className="absolute bottom-0 h-0.5 bg-purple-600 transition-all duration-300"
+							style={{
+								width: "var(--underline-width, 0)",
+								left: "var(--underline-left, 0)",
+							}}
+						/>
+						{[
+							{
+								href: "/dashboard",
+								label: "Dashboard",
+							},
+							{ href: "/calendar", label: "Calendar" },
+							{
+								href: "/cabshare",
+								label: "Cab Share",
+								className: "text-purple-600 font-semibold",
+							},
+							{ href: "/lostfound", label: "L&F" },
+							{ href: "/foodmenu", label: "Food Menu" },
+						].map(({ href, label, className = "" }) => (
+							<Link
+								key={href}
+								href={href}
+								className={`group relative ${className} text-muted-foreground hover:text-purple-600 transition-colors duration-300`}
+								onMouseEnter={(e) => {
+									const target = e.currentTarget;
+									const underline =
+										target.parentElement?.querySelector(
+											".absolute"
+										) as HTMLElement;
+									if (underline) {
+										underline.style.setProperty(
+											"--underline-width",
+											`${target.offsetWidth}px`
+										);
+										underline.style.setProperty(
+											"--underline-left",
+											`${target.offsetLeft}px`
+										);
+									}
+								}}
+								onMouseLeave={(e) => {
+									const underline =
+										e.currentTarget.parentElement?.querySelector(
+											".absolute"
+										) as HTMLElement;
+									if (underline) {
+										underline.style.setProperty(
+											"--underline-width",
+											"0"
+										);
+									}
+								}}
+							>
+								<span>{label}</span>
+							</Link>
+						))}
+					</div>
 				</div>
-				<div className="flex items-center gap-4 bg-">
+
+				<div className="flex items-center gap-4">
 					<ModeToggle />
-					<Image
-						src="/profile.jpg"
-						alt="Account"
-						width={48}
-						height={48}
-						className="rounded-full object-cover cursor-pointer border-2 border-black/10 dark:border-white"
-					/>
+					<Link href="/profile" className="h-8 w-8">
+						<Avatar>
+							<AvatarImage src={userImage} />
+							<AvatarFallback>{userName}</AvatarFallback>
+						</Avatar>
+					</Link>
 				</div>
 			</div>
 
 			{/* Content */}
 			<div className="p-8 flex-1">
 				<h1 className="text-3xl font-bold mb-6 text-center">
-					Add CabShare
+					Add Cab Share
 				</h1>
 
 				<Card className="max-w-xl mx-auto bg-transparent p-6 rounded-xl shadow-lg border border-black/10 dark:border-white/20">
@@ -155,7 +240,7 @@ export default function AddCabSharePage() {
 									</Button>
 									<Button
 										type="submit"
-										className="bg-purple-600 hover:bg-purple-700 text-black dark:text-white font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
+										className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10"
 									>
 										Add CabShare
 									</Button>
