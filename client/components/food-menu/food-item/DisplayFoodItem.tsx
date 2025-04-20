@@ -211,7 +211,10 @@ export default function DisplayFoodItem({
                     Cancel
                   </Button>
                 </Link>
-                <Button type="submit">Submit Review</Button>
+				
+                <Button type="submit" 
+				className="bg-purple-600 hover:bg-purple-700 font-semibold py-2 px-6 rounded-md drop-shadow-sm transition-all border border-black/10 dark:border-white/10 text-white"
+				>Submit Review</Button>
               </div>
             </form>
           </CardContent>
