@@ -22,7 +22,7 @@ export default async function FoodItemPage({
 	});
 
 	if (!foodEntry) {
-		return <div>Food item not found</div>;
+		return <div>Page not found</div>;
 	}
 
 	return <DisplayFoodItem foodEntry={foodEntry}></DisplayFoodItem>;
