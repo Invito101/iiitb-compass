@@ -64,22 +64,17 @@ export default function DisplayFoodItem({
 		<div className="min-h-screen flex flex-col bg-background">
 			<Navbar></Navbar>
 
-			{/* Content Section */}
-			<div className="flex flex-col justify-center items-center py-8 flex-grow px-8 -mt-15">
-				<Card className="w-full max-w-xl p-6 rounded-2xl shadow-lg">
-					<CardContent>
-						<div className="text-center mb-6">
-							<h1 className="text-3xl font-medium mb-1">
-								How was{" "}
-								<span className="font-bold">
-									{foodEntry.foodItem.name}
-								</span>
-								?
-							</h1>
-							<p className="text-muted-foreground">
-								Leave a review!
-							</p>
-						</div>
+      {/* Content Section */}
+      <div className="flex flex-col justify-center items-center py-8 flex-grow px-8">
+        <Card className="w-full max-w-xl p-6 rounded-2xl shadow-lg">
+          <CardContent>
+            <div className="text-center mb-6">
+              <h1 className="text-3xl font-medium mb-1">
+                How was{" "}
+                <span className="font-bold">{foodEntry.foodItem.name}</span>?
+              </h1>
+              <p className="text-muted-foreground">Leave a review!</p>
+            </div>
 
 						<form
 							onSubmit={handleSubmit(onSubmit)}
