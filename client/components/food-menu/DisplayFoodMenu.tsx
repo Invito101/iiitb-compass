@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { foodMenuCycleWithEntriesWithItemAndRatingType } from "@/types/prisma-types";
 import { format, parseISO } from "date-fns";
 import { Navbar } from "../general/Navbar";
+import { useRouter } from "next/navigation";
 
 const DAY_NAMES = [
 	"Sunday",
@@ -35,7 +36,13 @@ export default function DisplayFoodMenu({
 	const session = useSession();
 	const userName = session?.data?.user?.name || "User";
 	const userImage = session?.data?.user?.image || "/profile.jpg";
-
+	const router = useRouter();
+	const { data, status } = useSession();
+	useEffect(() => {
+		if (status === "unauthenticated") {
+		  router.push("/auth");
+		}
+	  }, [status, router]);
 	const today = new Date();
 	const todayIdx = today.getDay();
 	const [dayIdx, setDayIdx] = useState<number>(todayIdx);

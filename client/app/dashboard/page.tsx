@@ -7,6 +7,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Navbar } from "@/components/general/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
@@ -18,7 +19,13 @@ export default function DashboardLayout({
   const userImage = user?.data?.user?.image || "/profile.jpg";
 
   const [loading, setLoading] = useState(true);
-
+  const { data, status } = useSession();
+  const router = useRouter();
+	useEffect(() => {
+		if (status === "unauthenticated") {
+		  router.push("/auth");
+		}
+	  }, [status, router]);
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);

@@ -48,7 +48,6 @@ export default function AddCabSharePage() {
 		}
 	}, [status, router]);
 
-	if (status === "loading") return <p>Loading...</p>;
 
 	const onSubmit = async (values: CabSharingFormSchema) => {
 		const response = await createCabSharing(values);
